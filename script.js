@@ -1,3 +1,2 @@
-console.log(c);
-
-let c = 12;
+console.log(nm);
+var nm = "Harsh";
