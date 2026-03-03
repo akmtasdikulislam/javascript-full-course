@@ -1,2 +1,2 @@
-console.log(nm);
-var nm = "Harsh";
+console.log(age);
+let age = 25;
