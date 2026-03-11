@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Accessing TEXT using DOM</title>
+  </head>
+  <body>
+    <h1>Hello World</h1>
+    <h2>Hello World</h2>
+    <h3>Hello World</h3>
+    <p>Hello World</p>
+    <script>
+      /* 
+         ১. querySelector ব্যবহার করে HTML এলিমেন্টগুলোকে সিলেক্ট করা হচ্ছে।
+         এখানে ট্যাগ নেম (h1, h2, h3, p) দিয়ে এলিমেন্টগুলো ধরা হয়েছে এবং 
+         ভবিষ্যতে ব্যবহারের জন্য অর্থবহ ভেরিয়েবল নামে সেভ করা হয়েছে।
+      */
+      let mainHeading = document.querySelector("h1");
+      let subHeading = document.querySelector("h2");
+      let sectionTitle = document.querySelector("h3");
+      let paragraph = document.querySelector("p");
+
+      /* 
+         ২. console.dir() এর কাজ:
+         console.log() এর বদলে console.dir() ব্যবহার করলে ওই অবজেক্টের (এখানে h1) 
+         সবগুলো প্রপার্টি এবং মেথড বিস্তারিতভাবে দেখা যায়। এটি DOM অবজেক্ট ইনস্পেক্ট করার জন্য সেরা।
+      */
+      console.dir(mainHeading);
+
+      /* 
+         ৩. textContent প্রপার্টি:
+         এটি এলিমেন্টের ভেতরের শুধুমাত্র টেক্সট পরিবর্তন বা পাওয়ার জন্য ব্যবহৃত হয়। 
+         এটি CSS স্টাইল (যেমন: visibility: hidden) তোয়াক্কা না করে সব টেক্সট দেখায়।
+         এখানে h1 এর লেখা পরিবর্তন করে "Hello Programmers" করা হয়েছে।
+      */
+      mainHeading.textContent = "Hello Programmers";
+
+      /* 
+         ৪. innerText প্রপার্টি:
+         এটিও টেক্সট পরিবর্তনের জন্য ব্যবহৃত হয়, তবে এটি 'Human Readable' টেক্সট নিয়ে কাজ করে। 
+         যদি কোনো টেক্সট CSS দিয়ে লুকানো থাকে, innerText সেটি দেখাবে না। 
+         এটি textContent এর চেয়ে কিছুটা স্লো কারণ এটি লেআউট ক্যালকুলেট করে।
+      */
+      subHeading.innerText = "Hello JavaScript Learners";
+
+      /* 
+         ৫. innerHTML প্রপার্টি:
+         এটি সবচেয়ে শক্তিশালী কারণ এটি দিয়ে এলিমেন্টের ভেতরে শুধু টেক্সট নয়, 
+         সরাসরি নতুন HTML ট্যাগও ইনসার্ট করা যায়। 
+         এখানে h3 এর কন্টেন্ট পরিবর্তন করা হয়েছে।
+      */
+      sectionTitle.innerHTML = "Hello Web Developers";
+
+      /* 
+         ৬. innerHTML এর মাধ্যমে ট্যাগ ইনজেকশন:
+         এখানে প্যারাগ্রাফের ভেতরে শুধু টেক্সট নয়, বরং <i> ট্যাগ ব্যবহার করা হয়েছে। 
+         ব্রাউজার এটিকে রেন্ডার করার সময় লেখাটিকে ইটালিক (Italic) করে দেখাবে। 
+         textContent বা innerText ব্যবহার করলে <i> ট্যাগটি সরাসরি টেক্সট হিসেবে দেখা যেত, কাজ করত না।
+      */
+      paragraph.innerHTML = "<i>Welcome to DOM Manipulation in Bangla!</i>";
+
+      /* 
+         সারাংশ:
+         - textContent: দ্রুত এবং সব টেক্সট দেখায়।
+         - innerText: শুধু দৃশ্যমান টেক্সট দেখায়।
+         - innerHTML: HTML ট্যাগসহ কন্টেন্ট পরিবর্তন করতে ব্যবহৃত হয়।
+      */
+    </script>
+  </body>
+</html>
