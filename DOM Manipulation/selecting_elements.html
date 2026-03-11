@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Selecting Elements</title>
+  </head>
+  <body>
+    <h1 id="main-heading">DOM Selectors Demo</h1>
+    <p class="description">Learning how to select elements.</p>
+    <p class="description">This is the second paragraph.</p>
+
+    <ul id="list">
+      <li class="item">Item 1</li>
+      <li class="item">Item 2</li>
+      <li class="item">Item 3</li>
+    </ul>
+
+    <div name="container">Container Div</div>
+
+    <script>
+      /* 
+         ১. getElementById: এটি একটি নির্দিষ্ট ID ব্যবহার করে একটি মাত্র এলিমেন্টকে সিলেক্ট করে। 
+         যেহেতু একটি HTML পেজে একটি ID একবারই ব্যবহার করা উচিত, তাই এটি খুব দ্রুত কাজ করে।
+         এখানে 'main-heading' ID যুক্ত h1 এলিমেন্টটিকে সিলেক্ট করা হয়েছে।
+      */
+      const heading = document.getElementById("main-heading");
+
+      /* 
+         ২. getElementsByClassName: এটি একটি নির্দিষ্ট Class Name যুক্ত সকল এলিমেন্টকে একটি HTMLCollection হিসেবে রিটার্ন করে। 
+         এটি অনেকটা অ্যারের মতো কাজ করে কিন্তু এটি পুরোপুরি অ্যারে নয়। 
+         এখানে 'description' ক্লাসের সবকটি প্যারাগ্রাফকে সিলেক্ট করা হয়েছে।
+      */
+      const descriptions = document.getElementsByClassName("description");
+
+      /* 
+         ৩. getElementsByTagName: এটি ট্যাগের নাম (যেমন: h1, p, li) দিয়ে এলিমেন্ট সিলেক্ট করে। 
+         এটিও একটি HTMLCollection রিটার্ন করে। 
+         এখানে পেজের সকল 'li' (list item) এলিমেন্টগুলোকে খুঁজে বের করা হয়েছে।
+      */
+      const listItems = document.getElementsByTagName("li");
+
+      /* 
+         ৪. getElementsByName: এটি এলিমেন্টের 'name' অ্যাট্রিবিউট ব্যবহার করে এলিমেন্ট সিলেক্ট করে। 
+         এটি সাধারণত ফর্ম ইনপুটের ক্ষেত্রে বেশি ব্যবহৃত হয় এবং এটি একটি NodeList রিটার্ন করে।
+         এখানে 'container' নামের div টিকে সিলেক্ট করা হয়েছে।
+      */
+      const containers = document.getElementsByName("container");
+
+      /* 
+         ৫. querySelector: এটি CSS সিলেক্টর (যেমন: .class, #id, tag) ব্যবহার করে 
+         প্রথম যে এলিমেন্টটি মিলবে শুধুমাত্র সেটিকে সিলেক্ট করে। 
+         এটি খুবই শক্তিশালী কারণ এখানে CSS এর মতো জটিল সিলেক্টর ব্যবহার করা যায়।
+         এখানে '.item' ক্লাসের প্রথম li এলিমেন্টটিকে নেওয়া হয়েছে।
+      */
+      const firstItem = document.querySelector(".item");
+
+      /* 
+         ৬. querySelectorAll: এটি CSS সিলেক্টর ব্যবহার করে ওই সিলেক্টরের সাথে মিলে যাওয়া 
+         সকল এলিমেন্টকে একটি স্ট্যাটিক NodeList হিসেবে রিটার্ন করে। 
+         এটি আধুনিক জাভাস্ক্রিপ্টে সবচেয়ে বেশি ব্যবহৃত হয় কারণ এটি দিয়ে যেকোনো কিছু সিলেক্ট করা সহজ।
+         এখানে '.item' ক্লাসের সবকটি li এলিমেন্টকে সিলেক্ট করা হয়েছে।
+      */
+      const allItems = document.querySelectorAll(".item");
+    </script>
+  </body>
+</html>
