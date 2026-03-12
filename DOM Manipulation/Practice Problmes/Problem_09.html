@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Practice Problem 09</title>
+  </head>
+  <body>
+    <h1>Fruit List</h1>
+    <ul>
+      <li>🍎 Apple</li>
+      <li>🍌 Banana</li>
+      <li>🥭 Mango</li>
+      <li>🍊 Orange</li>
+      <li>🍓 Strawberry</li>
+      <li>🍇 Grapes</li>
+      <li>🍍 Pineapple</li>
+      <li>🍉 Watermelon</li>
+      <li>🍒 Cherry</li>
+      <li>🍑 Peach</li>
+    </ul>
+
+    <button id="delete-btn">Delete First Item</button>
+
+    <script>
+      /* 
+         Q9. Select the first item in a list and delete it from the DOM.
+         এই প্র্যাকটিসে আমরা শিখব কীভাবে বিদ্যমান কোনো HTML এলিমেন্টকে পেজ থেকে সম্পূর্ণভাবে মুছে ফেলতে হয়।
+      */
+
+      /* 
+         ১. আন-অর্ডারড লিস্ট (ul) সিলেকশন:
+         document.querySelector("ul") ব্যবহার করে মূল লিস্ট কন্টেইনারটিকে সিলেক্ট করা হয়েছে।
+         কেন করছি: কারণ আমরা এই লিস্টের ভেতর থেকে চাইল্ড এলিমেন্ট (li) রিমুভ করতে চাই। 
+         removeChild() মেথড ব্যবহার করার জন্য প্যারেন্ট এলিমেন্টকে সিলেক্ট করা প্রয়োজন।
+      */
+      let ul = document.querySelector("ul");
+
+      /* 
+         ২. বাটন সিলেকশন:
+         ID (#delete-btn) ব্যবহার করে ডিলিট বাটনটিকে সিলেক্ট করা হয়েছে।
+         কেন করছি: আমরা চাই ইউজার যখন এই বাটনে ক্লিক করবে, তখনই যেন লিস্টের প্রথম আইটেমটি ডিলিট হয়।
+      */
+      let deleteBtn = document.querySelector("#delete-btn");
+
+      /* 
+         ৩. ইভেন্ট লিসেনার যোগ করা (addEventListener):
+         বাটনটির ওপর একটি 'click' ইভেন্ট লিসেনার বসানো হয়েছে।
+         কেন করছি: যাতে ক্লিকের মাধ্যমে ডিলিট করার ফাংশনালিটি বা লজিকটি ট্রিগার করা যায়।
+      */
+      deleteBtn.addEventListener("click", () => {
+        /* 
+           ৪. প্রথম লিস্ট আইটেম সিলেকশন:
+           document.querySelector("li") ব্যবহার করা হয়েছে। 
+           কেন করছি: querySelector সবসময় ডকুমেন্টের প্রথম ম্যাচিং এলিমেন্টটি রিটার্ন করে। 
+           যেহেতু আমরা প্রতিবার প্রথম আইটেমটি ডিলিট করতে চাই, তাই এটি ব্যবহার করা হয়েছে।
+        */
+        let listItem = document.querySelector("li");
+
+        /* 
+           ৫. কন্ডিশনাল চেক (if-else):
+           এখানে চেক করা হচ্ছে 'listItem' ভেরিয়েবলটি খালি (null) কি না।
+           কেন করছি: যদি লিস্টের সব আইটেম ডিলিট হয়ে যায়, তবে querySelector কিছুই খুঁজে পাবে না (null)। 
+           খালি অবস্থায় ডিলিট করার চেষ্টা করলে এরর আসতে পারে, তাই এই সেফটি চেক প্রয়োজন।
+        */
+        if (listItem !== null) {
+          /* 
+             ৬. এলিমেন্ট রিমুভ করা (removeChild):
+             ul.removeChild(listItem) ব্যবহার করে সিলেক্ট করা <li> টিকে <ul> থেকে মুছে ফেলা হয়েছে।
+             কেন করছি: এটি DOM থেকে এলিমেন্টটি স্থায়ীভাবে সরিয়ে দেয়, ফলে ইউজার সেটি আর দেখতে পায় না।
+          */
+          ul.removeChild(listItem);
+        } else {
+          /* 
+             ৭. ইউজার ফিডব্যাক (alert):
+             যখন আর কোনো <li> বাকি থাকবে না, তখন ইউজারকে একটি অ্যালার্ট মেসেজ দেখানো হবে।
+             কেন করছি: ইউজারকে জানানোর জন্য যে লিস্টটি এখন সম্পূর্ণ খালি।
+          */
+          alert("All list item deleted");
+        }
+      });
+
+      /* 
+         সারাংশ: 
+         এই প্রজেক্টে আমরা শিখলাম কীভাবে `removeChild()` মেথড ব্যবহার করে ডাইনামিকভাবে 
+         DOM থেকে এলিমেন্ট ডিলিট করতে হয় এবং কীভাবে এরর হ্যান্ডেল করার জন্য কন্ডিশন ব্যবহার করতে হয়।
+      */
+    </script>
+  </body>
+</html>
