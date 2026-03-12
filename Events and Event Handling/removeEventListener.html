@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Event Binding: removeEventListener</title>
+  </head>
+  <body>
+    <div
+      id="container"
+      style="padding: 20px; text-align: center; font-family: Arial, sans-serif"
+    >
+      <h1>removeEventListener Study Guide</h1>
+
+      <!-- ১. সাধারণ বাটন ইভেন্ট রিমুভ করার জন্য -->
+      <div style="margin-bottom: 30px; border: 1px solid #ddd; padding: 15px">
+        <h3>1. One-time Click (Named Function)</h3>
+        <button id="btn-once" style="padding: 10px; cursor: pointer">
+          Click to Change Color (Only Once)
+        </button>
+        <p id="status-once">Event is active.</p>
+      </div>
+
+      <!-- ২. কন্ডিশনাল ইভেন্ট রিমুভ (যেমন: নির্দিষ্ট কাউন্ট পর্যন্ত কাজ করবে) -->
+      <div style="margin-bottom: 30px; border: 1px solid #ddd; padding: 15px">
+        <h3>2. Limited Clicks (Max 5)</h3>
+        <button
+          id="btn-limit"
+          style="
+            padding: 10px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+          "
+        >
+          Click Count: 0
+        </button>
+        <p id="status-limit">You can click 5 times.</p>
+      </div>
+
+      <!-- ৩. টগল বাটন দিয়ে ইভেন্ট অন/অফ করা -->
+      <div style="margin-bottom: 30px; border: 1px solid #ddd; padding: 15px">
+        <h3>3. Toggle Event Listener</h3>
+        <div
+          id="hover-box"
+          style="
+            width: 100px;
+            height: 100px;
+            background: lightblue;
+            margin: 10px auto;
+            line-height: 100px;
+          "
+        >
+          Hover Me
+        </div>
+        <button id="btn-toggle" style="padding: 5px 15px">
+          Disable Hover Effect
+        </button>
+      </div>
+    </div>
+
+    <script>
+      /* 
+           ---------------------------------------------------------
+           ১. Named Function ব্যবহার করে ইভেন্ট রিমুভ করা (সবচেয়ে গুরুত্বপূর্ণ)
+           ---------------------------------------------------------
+           removeEventListener কাজ করার প্রধান শর্ত হলো ফাংশনটি 'Named' হতে হবে। 
+           Anonymous function (function(){}) রিমুভ করা যায় না কারণ মেমোরিতে তার রেফারেন্স থাকে না।
+        */
+
+      const btnOnce = document.querySelector("#btn-once");
+      const statusOnce = document.querySelector("#status-once");
+
+      function changeColor() {
+        /* বাটনের ব্যাকগ্রাউন্ড র‍্যান্ডম কালার করবে */
+        const randomColor = Math.floor(Math.random() * 16777215).toString(16);
+        btnOnce.style.backgroundColor = "#" + randomColor; // Output: বাটনের রঙ বদলাবে
+
+        statusOnce.innerText =
+          "Event Removed! Now clicking won't change color.";
+        statusOnce.style.color = "red";
+
+        /* 
+               একবার কাজ করার পর ইভেন্টটি রিমুভ করে দেওয়া হচ্ছে। 
+               সিনট্যাক্স: element.removeEventListener(event, functionName)
+            */
+        btnOnce.removeEventListener("click", changeColor);
+      }
+
+      /* ইভেন্ট লিসেনার অ্যাড করা হলো */
+      btnOnce.addEventListener("click", changeColor);
+
+      /* 
+           ---------------------------------------------------------
+           ২. কন্ডিশনাল ইভেন্ট রিমুভ (Limited Usage)
+           ---------------------------------------------------------
+           অনেক সময় আমাদের প্রয়োজন হয় একটি ইভেন্ট নির্দিষ্ট কয়েকবার চলার পর বন্ধ হয়ে যাবে।
+        */
+
+      const btnLimit = document.querySelector("#btn-limit");
+      const statusLimit = document.querySelector("#status-limit");
+      let count = 0;
+
+      function countClicks() {
+        count++;
+        btnLimit.innerText = `Click Count: ${count}`; // Output: ক্লিক সংখ্যা বাড়বে
+
+        if (count >= 5) {
+          /* ৫ বার ক্লিক হওয়ার পর ইভেন্ট রিমুভ হবে */
+          btnLimit.removeEventListener("click", countClicks);
+          btnLimit.style.backgroundColor = "gray";
+          statusLimit.innerText = "Limit reached! Listener removed."; // Output: ৫ বার পর আর কাজ করবে না
+        }
+      }
+
+      btnLimit.addEventListener("click", countClicks);
+
+      /* 
+           ---------------------------------------------------------
+           ৩. টগল বাটন দিয়ে ইভেন্ট কন্ট্রোল করা
+           ---------------------------------------------------------
+           ইউজার চাইলে ইভেন্ট অন বা অফ করতে পারবে এমন লজিক।
+        */
+
+      const hoverBox = document.querySelector("#hover-box");
+      const btnToggle = document.querySelector("#btn-toggle");
+      let isEnabled = true;
+
+      function boxHighlight() {
+        hoverBox.style.transform = "scale(1.1)";
+        hoverBox.style.backgroundColor = "orange";
+      }
+
+      function boxNormal() {
+        hoverBox.style.transform = "scale(1)";
+        hoverBox.style.backgroundColor = "lightblue";
+      }
+
+      /* শুরুতে ইভেন্টগুলো অ্যাড করা হলো */
+      hoverBox.addEventListener("mouseenter", boxHighlight);
+      hoverBox.addEventListener("mouseleave", boxNormal);
+
+      btnToggle.addEventListener("click", () => {
+        if (isEnabled) {
+          /* ইভেন্ট রিমুভ করা হচ্ছে */
+          hoverBox.removeEventListener("mouseenter", boxHighlight);
+          hoverBox.removeEventListener("mouseleave", boxNormal);
+          btnToggle.innerText = "Enable Hover Effect";
+          isEnabled = false; // Output: হোভার ইফেক্ট বন্ধ হয়ে যাবে
+        } else {
+          /* ইভেন্ট পুনরায় অ্যাড করা হচ্ছে */
+          hoverBox.addEventListener("mouseenter", boxHighlight);
+          hoverBox.addEventListener("mouseleave", boxNormal);
+          btnToggle.innerText = "Disable Hover Effect";
+          isEnabled = true; // Output: হোভার ইফেক্ট আবার চালু হবে
+        }
+      });
+
+      /* 
+           ---------------------------------------------------------
+           গুরুত্বপূর্ণ তথ্য ও Best Practices (Learning Notes):
+           ---------------------------------------------------------
+           
+           ১. কেন removeEventListener ব্যবহার করবেন?
+              - Memory Management: অপ্রয়োজনীয় ইভেন্ট মেমোরি দখল করে রাখে (Memory Leak)।
+              - Performance: অনেক বেশি ইভেন্ট লিসেনার থাকলে পেজ স্লো হতে পারে।
+              - Logic Control: গেম বা ফর্ম ভ্যালিডেশনে নির্দিষ্ট ধাপের পর ইভেন্ট বন্ধ করতে হয়।
+
+           ২. Common Mistakes (সাধারণ ভুল):
+              - Anonymous Function: 
+                el.addEventListener('click', () => {...});
+                el.removeEventListener('click', () => {...}); // এটি কাজ করবে না! 
+                কারণ দুটি অ্যারো ফাংশন দেখতে এক হলেও মেমোরিতে তারা আলাদা অবজেক্ট।
+              
+              - Parameters mismatch: 
+                অ্যাড করার সময় যে টাইপ (click) এবং যে ফাংশন ব্যবহার করেছেন, 
+                রিমুভ করার সময় হুবহু তাই দিতে হবে।
+
+           ৩. Thumb-up Rules (সেরা নিয়ম):
+              - সবসময় Named Function ব্যবহার করুন যদি ভবিষ্যতে সেটি রিমুভ করার সম্ভাবনা থাকে।
+              - যদি শুধু একবারই ইভেন্ট চালাতে চান, তবে আধুনিক ব্রাউজারে { once: true } অপশনটি ব্যবহার করা সহজ।
+                উদাহরণ: btn.addEventListener('click', func, { once: true });
+
+           ৪. Dos & Don'ts:
+              - Do: কম্পোনেন্ট বা এলিমেন্ট ডিলিট করার আগে তার সাথে যুক্ত ইভেন্ট রিমুভ করা ভালো প্র্যাকটিস।
+              - Don't: গ্লোবাল উইন্ডো বা ডকুমেন্ট অবজেক্টে অপ্রয়োজনীয় ইভেন্ট ফেলে রাখবেন না।
+
+           ৫. Difference:
+              - addEventListener: ইভেন্ট রেজিস্টার করে।
+              - removeEventListener: মেমোরি থেকে ওই নির্দিষ্ট ইভেন্ট রেফারেন্সটি মুছে ফেলে।
+        */
+    </script>
+  </body>
+</html>
