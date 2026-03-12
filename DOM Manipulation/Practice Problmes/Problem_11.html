@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Practice Problem 11</title>
+    <style>
+      .active {
+        background: crimson;
+        color: white;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <button id="btn">Click me</button>
+    <script>
+      /* 
+         Q11. Toggle a class active on a button when clicked (Hint: Use classList.toggle()).
+         এই প্র্যাকটিসে আমরা শিখব কীভাবে একটি বাটনে ক্লিক করার মাধ্যমে একটি CSS ক্লাসকে 
+         একবার যোগ (Add) এবং একবার মুছে (Remove) ফেলা যায়, যাকে বলা হয় 'Toggle'।
+      */
+
+      /* 
+         ১. বাটন এলিমেন্ট সিলেকশন (querySelector):
+         ID (#btn) ব্যবহার করে বাটনটিকে সিলেক্ট করে 'btn' ভেরিয়েবলে রাখা হয়েছে।
+         কেন করছি: যাতে আমরা এই বাটনের ওপর ক্লিক ইভেন্ট এবং ক্লাসের পরিবর্তনগুলো প্রয়োগ করতে পারি।
+      */
+      let btn = document.querySelector("#btn");
+
+      /* 
+         ২. ইভেন্ট লিসেনার যোগ করা (addEventListener):
+         বাটনটির ওপর একটি 'click' ইভেন্ট লিসেনার বসানো হয়েছে।
+         কেন করছি: যাতে ইউজার যখনই বাটনে ক্লিক করবে, তখনই যেন আমাদের টগল করার লজিকটি কাজ করে।
+      */
+      btn.addEventListener("click", () => {
+        /* 
+           ৩. ক্লাস টগল করা (classList.toggle):
+           classList.toggle("active") মেথডটি ব্যবহার করা হয়েছে।
+           
+           কিভাবে কাজ করে: 
+           এটি চেক করে দেখে যে এলিমেন্টে "active" ক্লাসটি আগে থেকে আছে কি না। 
+           যদি না থাকে, তবে এটি ক্লাসটি যোগ করে (Add)। 
+           আর যদি আগে থেকেই থাকে, তবে এটি ক্লাসটি সরিয়ে দেয় (Remove)।
+           
+           কেন করছি: 
+           এর ফলে ইউজার একবার ক্লিক করলে বাটনটি লাল (Crimson) হবে এবং আবার ক্লিক করলে 
+           আগের সাধারণ অবস্থায় ফিরে আসবে। এটি ডার্ক মোড বা মেনু ওপেন/ক্লোজ করার জন্য খুব জনপ্রিয়।
+        */
+        btn.classList.toggle("active");
+      });
+
+      /* 
+         সারাংশ: 
+         এই প্রজেক্টে আমরা শিখলাম কীভাবে `classList.toggle()` ব্যবহার করে খুব সহজে 
+         কোনো এলিমেন্টের স্টেট (অবস্থা) পরিবর্তন করা যায়, যা ইউজার ইন্টারফেসকে আরও ডাইনামিক করে তোলে।
+      */
+    </script>
+  </body>
+</html>
