@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Practice Problem 10</title>
+    <style>
+      .highlight {
+        background: yellow;
+        color: red;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Item List</h1>
+    <ul>
+      <li>Item 1</li>
+      <li>Item 2</li>
+      <li>Item 3</li>
+      <li>Item 4</li>
+      <li>Item 5</li>
+      <li>Item 6</li>
+      <li>Item 7</li>
+      <li>Item 8</li>
+      <li>Item 9</li>
+      <li>Item 10</li>
+      <li>Item 11</li>
+      <li>Item 12</li>
+      <li>Item 13</li>
+      <li>Item 14</li>
+      <li>Item 15</li>
+    </ul>
+    <button id="highlight-btn">Highlight Items</button>
+
+    <script>
+      /* 
+         Q10 (Alternative). Add a highlight class to every even item in a list.
+         এই পদ্ধতিতে আমরা CSS সিলেক্টর ব্যবহার করে সরাসরি জোড় (even) আইটেমগুলো সিলেক্ট করা শিখব।
+      */
+
+      /* 
+         ১. নির্দিষ্ট (Even) লিস্ট আইটেম সিলেকশন:
+         document.querySelectorAll("ul li:nth-child(2n)") ব্যবহার করা হয়েছে।
+         কেন করছি: CSS-এর :nth-child(2n) সিলেক্টরটি শুধুমাত্র জোড় সংখ্যার (২, ৪, ৬...) এলিমেন্টগুলোকে খুঁজে বের করে। 
+         এর ফলে আমাদের জাভাস্ক্রিপ্টে আলাদা করে if-else কন্ডিশন লিখে চেক করার প্রয়োজন পড়ছে না।
+      */
+      let listItems = document.querySelectorAll("ul li:nth-child(2n)");
+
+      /* 
+         ২. বাটন সিলেকশন:
+         ID (#highlight-btn) ব্যবহার করে বাটনটিকে সিলেক্ট করা হয়েছে।
+         কেন করছি: আমরা চাই ইউজার যখন এই বাটনে ক্লিক করবে, তখনই যেন হাইলাইট করার প্রক্রিয়াটি শুরু হয়।
+      */
+      let highlightBtn = document.querySelector("#highlight-btn");
+
+      /* 
+         ৩. ইভেন্ট লিসেনার যোগ করা (addEventListener):
+         বাটনটির ওপর একটি 'click' ইভেন্ট লিসেনার বসানো হয়েছে।
+         কেন করছি: যাতে ক্লিকের মাধ্যমে হাইলাইট করার লজিকটি ট্রিগার করা যায়।
+      */
+      highlightBtn.addEventListener("click", () => {
+        /* 
+           ৪. forEach লুপ চালানো:
+           সিলেক্ট করা জোড় আইটেমগুলোর (NodeList) ওপর forEach লুপ চালানো হয়েছে।
+           কেন করছি: যেহেতু listItems-এ শুধুমাত্র জোড় আইটেমগুলোই আছে, তাই লুপের মাধ্যমে প্রত্যেকটিতে ক্লাস যোগ করা সহজ।
+        */
+        listItems.forEach((item) => {
+          /* 
+             ৫. ক্লাস যোগ করা (classList.add):
+             প্রতিটি আইটেমে classList.add("highlight") মেথড ব্যবহার করে CSS ক্লাসটি যোগ করা হয়েছে।
+             কেন করছি: এতে HTML এলিমেন্টটি উপরে ডিফাইন করা .highlight স্টাইলটি পেয়ে যাবে।
+          */
+          item.classList.add("highlight");
+        });
+      });
+
+      /* 
+         সারাংশ: 
+         এই অল্টারনেটিভ পদ্ধতিতে আমরা শিখলাম কীভাবে `nth-child` সিলেক্টর ব্যবহার করে 
+         জাভাস্ক্রিপ্টের ভেতরে কন্ডিশন না লিখে সরাসরি নির্দিষ্ট এলিমেন্ট সিলেক্ট করা যায়। 
+         এটি কোডকে আরও ছোট এবং ক্লিন (Clean) রাখতে সাহায্য করে।
+      */
+    </script>
+  </body>
+</html>
