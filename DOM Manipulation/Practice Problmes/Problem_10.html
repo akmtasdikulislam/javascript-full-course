@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Practice Problem 10</title>
+    <style>
+      .highlight {
+        background: yellow;
+        color: red;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Item List</h1>
+    <ul>
+      <li>Item 1</li>
+      <li>Item 2</li>
+      <li>Item 3</li>
+      <li>Item 4</li>
+      <li>Item 5</li>
+      <li>Item 6</li>
+      <li>Item 7</li>
+      <li>Item 8</li>
+      <li>Item 9</li>
+      <li>Item 10</li>
+      <li>Item 11</li>
+      <li>Item 12</li>
+      <li>Item 13</li>
+      <li>Item 14</li>
+      <li>Item 15</li>
+    </ul>
+    <button id="highlight-btn">Highlight Items</button>
+
+    <script>
+      /* 
+         Q10. Add a highlight class to every even item in a list.
+         এই প্র্যাকটিসে আমরা শিখব কীভাবে লুপ এবং কন্ডিশন ব্যবহার করে নির্দিষ্ট কিছু এলিমেন্টে CSS ক্লাস যোগ করতে হয়।
+      */
+
+      /* 
+         ১. সব লিস্ট আইটেম সিলেকশন (querySelectorAll):
+         document.querySelectorAll("li") ব্যবহার করে পেজের সবকটি <li> এলিমেন্টকে সিলেক্ট করা হয়েছে।
+         কেন করছি: এটি একটি NodeList প্রদান করে, যার ওপর লুপ চালিয়ে আমরা প্রতিটি আইটেম চেক করতে পারব।
+      */
+      let listItems = document.querySelectorAll("li");
+
+      /* 
+         ২. বাটন সিলেকশন:
+         ID (#highlight-btn) ব্যবহার করে বাটনটিকে সিলেক্ট করা হয়েছে।
+         কেন করছি: আমরা চাই ইউজার যখন এই বাটনে ক্লিক করবে, তখনই যেন হাইলাইট করার প্রক্রিয়াটি শুরু হয়।
+      */
+      let highlightBtn = document.querySelector("#highlight-btn");
+
+      /* 
+         ৩. ইভেন্ট লিসেনার যোগ করা (addEventListener):
+         বাটনটির ওপর একটি 'click' ইভেন্ট লিসেনার বসানো হয়েছে।
+         কেন করছি: যাতে ক্লিকের মাধ্যমে হাইলাইট করার লজিকটি ট্রিগার করা যায়।
+      */
+      highlightBtn.addEventListener("click", () => {
+        /* 
+           ৪. ফর লুপ (for loop) চালানো:
+           লিস্টের প্রতিটি আইটেমের ওপর দিয়ে যাওয়ার জন্য একটি স্ট্যান্ডার্ড ফর লুপ ব্যবহার করা হয়েছে।
+           কেন করছি: আমাদের কাছে অনেকগুলো আইটেম আছে, লুপ ছাড়া প্রত্যেকটিকে আলাদাভাবে চেক করা সম্ভব নয়।
+        */
+        for (let i = 0; i < listItems.length; i++) {
+          /* 
+             ৫. জোড় সংখ্যা বা ইভেন আইটেম চেক (Condition):
+             (i + 1) % 2 === 0 কন্ডিশনটি ব্যবহার করা হয়েছে। 
+             কেন করছি: প্রোগ্রামিংয়ে ইনডেক্স ০ থেকে শুরু হয় (Item 1 এর ইনডেক্স ০)। 
+             তাই মানুষের পড়ার উপযোগী "ইভেন" বা জোড় পজিশন (২, ৪, ৬...) বের করতে ইনডেক্সের সাথে ১ যোগ করে ২ দিয়ে ভাগ করা হয়েছে।
+          */
+          if ((i + 1) % 2 === 0) {
+            /* 
+               ৬. ক্লাস যোগ করা (classList.add):
+               শর্ত মিলে গেলে classList.add("highlight") মেথড ব্যবহার করে ওই এলিমেন্টে CSS ক্লাসটি যোগ করা হয়েছে।
+               
+               কেন করছি: 
+               সরাসরি স্টাইল না লিখে ক্লাস যোগ করা ভালো প্র্যাকটিস। এতে HTML এলিমেন্টটি 
+               উপরে ডিফাইন করা .highlight স্টাইলটি (হলুদ ব্যাকগ্রাউন্ড ও লাল টেক্সট) পেয়ে যাবে।
+            */
+            listItems[i].classList.add("highlight");
+          }
+        }
+      });
+
+      /* 
+         সারাংশ: 
+         এই প্রজেক্টে আমরা শিখলাম কীভাবে `querySelectorAll` দিয়ে পাওয়া এলিমেন্টগুলোর ওপর 
+         লুপ চালিয়ে গাণিতিক শর্ত (Modulo operator %) প্রয়োগ করতে হয় এবং `classList.add()` 
+         ব্যবহার করে ডাইনামিকভাবে ডিজাইন পরিবর্তন করতে হয়।
+      */
+    </script>
+  </body>
+</html>
