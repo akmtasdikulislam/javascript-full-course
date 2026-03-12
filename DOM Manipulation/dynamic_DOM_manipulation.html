@@ -101,6 +101,22 @@
       );
 
       /* 
+           ১২. DocumentFragment:
+           এটি একটি "অদৃশ্য" লাইটওয়েট কন্টেইনার। লুপের মাধ্যমে অনেক এলিমেন্ট তৈরি করে 
+           একে একে DOM-এ যোগ করলে পারফরম্যান্স খারাপ হয়। তার বদলে ফ্র্যাগমেন্টে সব রেখে 
+           একবারে DOM-এ পুশ করা বুদ্ধিমানের কাজ।
+        */
+      const fragment = document.createDocumentFragment();
+      for (let i = 1; i <= 5; i++) {
+        const li = document.createElement("li");
+        li.textContent = `List Item ${i}`;
+        fragment.appendChild(li); // মেমরিতে থাকা ফ্র্যাগমেন্টে যোগ হচ্ছে
+      }
+      const ul = document.createElement("ul");
+      ul.appendChild(fragment); // একবারে ৫টি আইটেমসহ ul তৈরি হলো
+      document.body.appendChild(ul); // একবারে DOM-এ পুশ হলো
+
+      /* 
            ---------------------------------------------------------
            সারাংশ ও বেস্ট প্র্যাকটিস (Study Notes):
            ---------------------------------------------------------
