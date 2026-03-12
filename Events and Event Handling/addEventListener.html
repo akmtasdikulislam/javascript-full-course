@@ -6,55 +6,177 @@
     <title>Event Binding: addEventListener</title>
   </head>
   <body>
-    /* <h1> ট্যাগটি একটি হেডিং তৈরি করছে যা ইউজার ইন্টারফেসের মূল শিরোনাম হিসেবে কাজ করবে */
-    <h1>Click Me</h1>
-    
-    /* <p> ট্যাগটি একটি প্যারাগ্রাফ তৈরি করছে যেখানে কিছু ডামি টেক্সট রাখা হয়েছে ইভেন্ট টেস্ট করার জন্য */
-    <p>
-      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sunt quidem
-      saepe recusandae hic fugit dignissimos commodi quis repellendus amet aut,
-      eligendi quas id, illo adipisci minus ducimus veritatis ullam! Doloremque?
-    </p>
+    <div
+      id="container"
+      style="padding: 20px; border: 2px solid #ccc; text-align: center"
+    >
+      <h1 id="main-title">addEventListener Master Guide</h1>
+
+      <button id="btn-click">Click Me!</button>
+      <button id="btn-hover">Hover Over Me!</button>
+
+      <div
+        id="box"
+        style="
+          width: 200px;
+          height: 100px;
+          background: lightgray;
+          margin: 20px auto;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        "
+      >
+        Interaction Box
+      </div>
+
+      <input
+        type="text"
+        id="input-field"
+        placeholder="Type something..."
+        style="padding: 10px; width: 80%"
+      />
+      <p id="display-text">Output will show here.</p>
+    </div>
 
     <script>
       /* 
-         document.querySelector("h1") ব্যবহার করে HTML এর প্রথম h1 এলিমেন্টটিকে সিলেক্ট করা হয়েছে 
-         এবং সেটিকে 'h1' নামক ভ্যারিয়েবলে স্টোর করা হয়েছে যাতে পরবর্তীতে এটি নিয়ে কাজ করা যায়।
+         ১. এলিমেন্ট সিলেক্ট করা:
+         প্রথমে DOM থেকে HTML এলিমেন্টগুলোকে ভেরিয়েবলে স্টোর করতে হয়।
       */
-      let h1 = document.querySelector("h1");
+      /* 
+         document.querySelector ব্যবহার করে HTML এর ID দিয়ে এলিমেন্টগুলোকে সিলেক্ট করা হয়েছে। 
+         এগুলো ভেরিয়েবলে রাখা হয়েছে যাতে পরবর্তীতে বার বার document.querySelector লিখতে না হয় 
+         এবং কোড ক্লিন থাকে।
+      */
+      const title = document.querySelector("#main-title");
+      const clickBtn = document.querySelector("#btn-click");
+      const hoverBtn = document.querySelector("#btn-hover");
+      const box = document.querySelector("#box");
+      const input = document.querySelector("#input-field");
+      const display = document.querySelector("#display-text");
 
       /* 
-         একইভাবে document.querySelector("p") ব্যবহার করে প্যারাগ্রাফ এলিমেন্টটিকে সিলেক্ট করে 
-         'p' নামক ভ্যারিয়েবলে রাখা হয়েছে।
+         ২. 'click' ইভেন্ট (Common Usage):
+         যখন ইউজার বাটনে ক্লিক করবে, তখন টাইটেলের রঙ পরিবর্তন হবে।
       */
-      let p = document.querySelector("p");
-
       /* 
-         h1 এলিমেন্টে একটি 'click' ইভেন্ট লিসেনার যোগ করা হয়েছে। 
-         যখনই ইউজার h1 এর উপর ক্লিক করবে, তখন এই অ্যারো ফাংশনটি কল হবে।
-         ভিতরে h1.style.color = "red" এর মাধ্যমে টেক্সটের রঙ লাল করে দেওয়া হচ্ছে।
+         addEventListener এর মাধ্যমে 'click' ইভেন্ট লিসেন করা হচ্ছে। 
+         যখনই clickBtn এ ক্লিক পড়বে, তখন এই anonymous function-টি কল হবে। 
+         এর ভেতরে টাইটেলের টেক্সট এবং কালার ম্যানিপুলেট করা হয়েছে।
       */
-      h1.addEventListener("click", () => {
-        h1.style.color = "red";
+      clickBtn.addEventListener("click", function () {
+        /* 
+           এখানে anonymous function ব্যবহার করা হয়েছে। 
+           টাইটেলের কালার ব্লু হবে।
+        */
+        title.style.color = "blue"; // Output: টাইটেল নীল হয়ে যাবে
+        title.textContent = "You Clicked the Button!";
       });
 
       /* 
-         p (প্যারাগ্রাফ) এলিমেন্টে একটি 'click' ইভেন্ট লিসেনার যোগ করা হয়েছে। 
-         সিঙ্গেল ক্লিক করলে প্যারাগ্রাফের টেক্সট কালার সবুজ (green) হয়ে যাবে। 
-         addEventListener ব্যবহারের সুবিধা হলো এটি একই এলিমেন্টে একাধিক ইভেন্ট হ্যান্ডেল করতে পারে।
+         ৩. 'mouseover' এবং 'mouseout' (Hover Effect):
+         মাউস এলিমেন্টের ওপর আনলে এবং সরিয়ে নিলে স্টাইল চেঞ্জ করা।
       */
-      p.addEventListener("click", () => {
-        p.style.color = "green";
+      /* 
+         'mouseover' ইভেন্ট তখন কাজ করে যখন মাউস কার্সার এলিমেন্টের ওপর আসে। 
+         এখানে Arrow Function ব্যবহার করে বাটনের ব্যাকগ্রাউন্ড এবং ফন্ট ওয়েট 
+         পরিবর্তন করা হয়েছে যাতে ইউজার একটি ভিজ্যুয়াল ফিডব্যাক পায়।
+      */
+      hoverBtn.addEventListener("mouseover", () => {
+        /* Arrow function ব্যবহার করা হয়েছে */
+        hoverBtn.style.backgroundColor = "yellow"; // Output: ব্যাকগ্রাউন্ড হলুদ হবে
+        hoverBtn.style.fontWeight = "bold";
       });
 
       /* 
-         p এলিমেন্টে এবার 'dblclick' (double click) ইভেন্ট লিসেনার যোগ করা হয়েছে। 
-         যদি ইউজার প্যারাগ্রাফের উপর দ্রুত দুইবার ক্লিক করে, তবে টেক্সটের রঙ নীল (blue) হয়ে যাবে। 
-         এটি দেখায় যে আমরা একই এলিমেন্টে ভিন্ন ভিন্ন অ্যাকশনের জন্য ভিন্ন ভিন্ন লজিক সেট করতে পারি।
+         'mouseout' ইভেন্ট তখন ট্রিগার হয় যখন মাউস এলিমেন্ট থেকে বাইরে চলে যায়। 
+         এখানে স্টাইলগুলো খালি স্ট্রিং ("") করে দেওয়া হয়েছে যাতে ডিফল্ট CSS ফিরে আসে।
       */
-      p.addEventListener("dblclick", () => {
-        p.style.color = "blue";
+      hoverBtn.addEventListener("mouseout", () => {
+        hoverBtn.style.backgroundColor = ""; // Output: আগের অবস্থায় ফিরবে
+        hoverBtn.style.fontWeight = "normal";
       });
+
+      /* 
+         ৪. 'dblclick' (Double Click):
+         বক্সের ওপর ডাবল ক্লিক করলে এর সাইজ এবং বর্ডার রেডিয়াস পরিবর্তন হবে।
+      */
+      /* 
+         'dblclick' বা ডাবল ক্লিক ইভেন্ট ব্যবহার করে বক্সটিকে গোল (borderRadius 50%) 
+         করা হয়েছে। এটি সাধারণত স্পেশাল অ্যাকশনের জন্য ব্যবহৃত হয়। 
+         innerText দিয়ে বক্সের ভেতরের লেখাও পরিবর্তন করা হয়েছে।
+      */
+      box.addEventListener("dblclick", () => {
+        box.style.borderRadius = "50%"; // Output: বক্সটি গোল হয়ে যাবে
+        box.style.backgroundColor = "coral";
+        box.innerText = "Double Clicked!";
+      });
+
+      /* 
+         ৫. 'input' ইভেন্ট (Real-time tracking):
+         ইনপুট ফিল্ডে যা লেখা হবে তা সাথে সাথে নিচের প্যারাগ্রাফে দেখাবে।
+      */
+      /* 
+         'input' ইভেন্টটি টেক্সট ফিল্ডে প্রতিটি কি-স্ট্রোকের (Keystroke) সাথে সাথে কাজ করে। 
+         প্যারামিটার হিসেবে 'event' অবজেক্ট নেওয়া হয়েছে। 
+         event.target.value এর মাধ্যমে ইনপুট বক্সে বর্তমানে যা লেখা আছে তা সরাসরি 
+         প্যারাগ্রাফে (display) সেট করে দেওয়া হচ্ছে।
+      */
+      input.addEventListener("input", (event) => {
+        /* 
+           'event' অবজেক্ট থেকে 'target.value' দিয়ে ইনপুটের ডাটা পাওয়া যায়।
+        */
+        display.innerText = `You are typing: ${event.target.value}`; // Output: রিয়েল টাইম টেক্সট আপডেট
+      });
+
+      /* 
+         ৬. Named Function ব্যবহার (Best Practice for Reusability):
+         একই ফাংশন একাধিক জায়গায় ব্যবহার করতে চাইলে আলাদা ফাংশন লিখে নাম পাস করতে হয়।
+      */
+      /* 
+         এটি একটি Named Function। এর সুবিধা হলো এই ফাংশনটি আমরা চাইলে 
+         অন্যান্য এলিমেন্টেও ব্যবহার করতে পারবো অথবা removeEventListener দিয়ে 
+         ইভেন্টটি বন্ধ করতে পারবো।
+      */
+      function highlightBox() {
+        box.style.border = "5px solid black";
+      }
+
+      /* 
+         'mouseenter' ইভেন্ট ব্যবহার করে highlightBox ফাংশনটি কল করা হয়েছে। 
+         মনে রাখতে হবে: এখানে highlightBox() লেখা যাবে না, শুধু ফাংশনের নাম 
+         দিতে হবে। কারণ আমরা চাই ইভেন্ট ঘটার পর ফাংশনটি রান হোক, সাথে সাথে নয়।
+      */
+      box.addEventListener("mouseenter", highlightBox); // মাউস ঢুকলে বর্ডার আসবে
+
+      /* 
+         ---------------------------------------------------------
+         গুরুত্বপূর্ণ তথ্য ও Best Practices (Learning Notes):
+         ---------------------------------------------------------
+         
+         ১. কেন addEventListener ব্যবহার করবেন?
+            - একই এলিমেন্টে একাধিক ইভেন্ট লিসেনার যোগ করা যায় (যা onclick এ সম্ভব নয়)।
+            - এটি আধুনিক এবং ক্লিন কোড লিখতে সাহায্য করে।
+            - ইভেন্ট ক্যাপচারিং এবং বাবলিং কন্ট্রোল করা যায়।
+
+         ২. Common Mistakes (সাধারণ ভুল):
+            - ফাংশন কল করে ফেলা: addEventListener("click", myFunc()) -> ভুল। 
+              সঠিক হলো: addEventListener("click", myFunc) -> শুধু নাম দিতে হয়।
+            - বানান ভুল: "onclick" এর বদলে শুধু "click" লিখতে হয় addEventListener এ।
+
+         ৩. Thumb-up Rules (সেরা নিয়ম):
+            - যদি ইভেন্ট রিমুভ করার প্রয়োজন হয় (removeEventListener), তবে অবশ্যই Named Function ব্যবহার করুন।
+            - DOM লোড হওয়ার পর স্ক্রিপ্ট রান করান (defer ব্যবহার করা বা বডির শেষে স্ক্রিপ্ট রাখা)।
+
+         ৪. Differences (পার্থক্য):
+            - onclick: একটি এলিমেন্টে মাত্র একটি onclick থাকতে পারে। নতুনটি আগেরটিকে ওভাররাইট করে।
+            - addEventListener: এটি একটি লিস্টের মতো কাজ করে, যত খুশি ইভেন্ট যোগ করা যায়।
+
+         ৫. Dos & Don'ts:
+            - Do: মেমোরি লিক বাঁচাতে অপ্রয়োজনীয় ইভেন্ট রিমুভ করুন।
+            - Don't: লুপের ভেতরে সরাসরি ফাংশন ডিক্লেয়ার করা এড়িয়ে চলুন যদি পারফরম্যান্স ইস্যু থাকে।
+      */
     </script>
   </body>
 </html>
