@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Style Updates</title>
+    <style>
+      .hulu {
+        color: red;
+        background: greenyellow;
+        font-family: cursive;
+      }
+      .border-box {
+        border: 2px solid red;
+        padding: 10px;
+      }
+      .hidden {
+        display: none;
+      }
+      .highlight {
+        background-color: yellow;
+        font-weight: bold;
+      }
+      .rounded {
+        border: 2px solid red;
+        border-radius: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="main-title">Style Manipulation Demo</h1>
+    <p id="text-para">This is a paragraph for styling.</p>
+
+    <div id="box" class="border-box">I am a Box</div>
+
+    <button id="toggle-btn">Toggle Highlight</button>
+    <button id="hide-btn">Hide/Show Box</button>
+    <button id="remove-btn">Remove Border</button>
+    <button id="replace-btn">Replace Border with Rounded</button>
+
+    <script>
+      /* 
+         ১. এলিমেন্ট সিলেকশন:
+         প্রথমে আমরা যে এলিমেন্টগুলোর স্টাইল পরিবর্তন করব সেগুলোকে ভেরিয়েবলে রাখছি।
+      */
+      const title = document.querySelector("#main-title");
+      const para = document.querySelector("#text-para");
+      const box = document.querySelector("#box");
+      const toggleBtn = document.querySelector("#toggle-btn");
+      const hideBtn = document.querySelector("#hide-btn");
+      const removeBtn = document.querySelector("#remove-btn");
+      const replaceBtn = document.querySelector("#replace-btn");
+
+      /* 
+         ২. .style প্রপার্টি (Inline Styles):
+         এটি ব্যবহার করে সরাসরি HTML এলিমেন্টের 'style' অ্যাট্রিবিউটে CSS যোগ করা হয়।
+         মনে রাখতে হবে: CSS এ যা 'background-color' (kebab-case), JS এ তা 'backgroundColor' (camelCase)।
+      */
+      title.style.color = "blue"; // টেক্সট নীল হবে
+      title.style.fontSize = "40px"; // ফন্ট সাইজ বড় হবে
+      title.style.textAlign = "center"; // লেখা মাঝখানে আসবে
+      title.style.borderBottom = "2px solid black"; // নিচে বর্ডার আসবে
+
+      /* 
+         ৩. classList.add(className):
+         এটি এলিমেন্টে নতুন একটি CSS ক্লাস যোগ করে। এটি inline style এর চেয়ে ভালো পদ্ধতি।
+      */
+      para.classList.add("hulu"); // প্যারাগ্রাফে 'hulu' ক্লাসের স্টাইলগুলো যোগ হবে
+
+      /* 
+         ৪. classList.remove(className):
+         এটি এলিমেন্ট থেকে বিদ্যমান কোনো ক্লাস সরিয়ে ফেলে।
+      */
+      removeBtn.addEventListener("click", () => {
+        box.classList.remove("border-box"); // ক্লিক করলে বক্স থেকে লাল বর্ডার চলে যাবে
+      });
+
+      /* 
+         ৫. classList.toggle(className):
+         যদি ক্লাসটি থাকে তবে সরিয়ে দেয়, আর না থাকলে যোগ করে।
+         এটি সাধারণত বাটন ক্লিকের মাধ্যমে কোনো ইফেক্ট দেখাতে ব্যবহৃত হয়।
+      */
+      toggleBtn.addEventListener("click", () => {
+        para.classList.toggle("highlight"); // ক্লিক করলে হলুদ ব্যাকগ্রাউন্ড আসবে/যাবে
+      });
+
+      /* 
+         ৬. classList.contains(className):
+         কোনো এলিমেন্টে নির্দিষ্ট ক্লাস আছে কি না তা চেক করে true/false রিটার্ন করে।
+      */
+      hideBtn.addEventListener("click", () => {
+        box.classList.toggle("hidden");
+        if (box.classList.contains("hidden")) {
+          console.log("Box is now hidden"); // Output: Box is now hidden (যখন লুকানো থাকবে)
+        }
+      });
+
+      /* 
+         ৭. classList.replace(oldClass, newClass):
+         একটি ক্লাস সরিয়ে সরাসরি অন্য একটি ক্লাস বসাতে এটি ব্যবহৃত হয়।
+      */
+      replaceBtn.addEventListener("click", () => {
+        box.classList.replace("border-box", "rounded"); // পুরনো ক্লাস বদলে নতুন ক্লাস আসবে
+      });
+
+      /* 
+         ৮. getComputedStyle(element):
+         .style শুধু ইনলাইন স্টাইল পড়তে পারে। কিন্তু CSS ফাইলে লেখা স্টাইল পড়ার জন্য 
+         window.getComputedStyle() ব্যবহার করতে হয়।
+      */
+      let computedColor = window.getComputedStyle(title).color;
+      console.log(computedColor); // Output: rgb(0, 0, 255) (নীল রঙের RGB ভ্যালু)
+
+      /* 
+         ---------------------------------------------------------
+         সারাংশ ও বেস্ট প্র্যাকটিস (Study Notes):
+         ---------------------------------------------------------
+         
+         * .style vs .classList:
+           - .style ব্যবহার করলে সেটি ইনলাইন স্টাইল হিসেবে বসে, যার প্রায়োরিটি সবচেয়ে বেশি। 
+             এটি ছোটখাটো ডাইনামিক পরিবর্তনের জন্য ভালো।
+           - .classList ব্যবহার করা বেস্ট প্র্যাকটিস কারণ এতে CSS এবং JS আলাদা থাকে। 
+             ডিজাইন পরিবর্তন করতে হলে শুধু CSS ফাইল হাত দিলেই হয়।
+
+         * থাম্ব-রুল (Thumb Rule):
+           - সবসময় camelCase ব্যবহার করুন (যেমন: marginTop, paddingLeft)।
+           - যদি অনেকগুলো স্টাইল একসাথে পাল্টাতে হয়, তবে একটি CSS ক্লাস বানিয়ে সেটি .add() করুন।
+
+         * কমন মিস্টেক (Common Mistakes):
+           - element.style = "color: red"; এভাবে লিখলে আগের সব ইনলাইন স্টাইল মুছে যায়। 
+             সবসময় element.style.color = "red"; এভাবে লিখুন।
+           - ইউনিটের কথা ভুলে যাওয়া: element.style.width = "100"; কাজ করবে না, "100px" দিতে হবে।
+
+         * পারফরম্যান্স টিপস:
+           - বারবার .style পরিবর্তন করলে ব্রাউজারকে বারবার রি-রেন্ডার করতে হয়। 
+             তার চেয়ে একটি ক্লাসে সব স্টাইল লিখে classList.add() করা অনেক ফাস্ট।
+      */
+    </script>
+  </body>
+</html>
