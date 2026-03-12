@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Practice Problem 03</title>
+  </head>
+  <body>
+    <p>
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore ad
+      magnam accusantium pariatur quae debitis error tempora! Sint, quod nobis.
+    </p>
+    <button id="replace-btn">Replace</button>
+    <script>
+      // Q3. Select a paragraph and replace its content with: <b>Updated</b> by JavaScript.
+
+      /* 
+         ১. প্যারাগ্রাফ এলিমেন্ট সিলেকশন (querySelector):
+         document.querySelector("p") ব্যবহার করে পেজের প্রথম <p> ট্যাগটিকে সিলেক্ট করা হয়েছে।
+         কেন করছি: যাতে আমরা এই নির্দিষ্ট প্যারাগ্রাফের ভেতরের টেক্সট বা HTML পরিবর্তন করতে পারি।
+      */
+      let paragraph = document.querySelector("p");
+
+      /* 
+         ২. বাটন সিলেকশন (querySelector):
+         ID (#replace-btn) ব্যবহার করে বাটনটিকে সিলেক্ট করে 'replaceBtn' ভেরিয়েবলে রাখা হয়েছে।
+         কেন করছি: কারণ আমরা চাই ইউজার যখন এই বাটনে ক্লিক করবে, তখনই যেন পরিবর্তনটি ঘটে।
+      */
+      let replaceBtn = document.querySelector("#replace-btn");
+
+      /* 
+         ৩. ইভেন্ট লিসেনার যোগ করা (addEventListener):
+         বাটনটির ওপর একটি 'click' ইভেন্ট লিসেনার বসানো হয়েছে।
+         কেন করছি: এটি ব্রাউজারকে নির্দেশ দেয় যে, বাটনে ক্লিক হওয়া মাত্রই এর ভেতরের ফাংশনটি রান করতে হবে।
+      */
+      replaceBtn.addEventListener("click", () => {
+        /* 
+           ৪. innerHTML এর মাধ্যমে কন্টেন্ট পরিবর্তন:
+           প্যারাগ্রাফের ভেতরের কন্টেন্ট পরিবর্তন করে "<b>Updated</b> by JavaScript" সেট করা হয়েছে।
+           
+           কেন innerHTML ব্যবহার করছি: 
+           এখানে আমাদের "Updated" শব্দটিকে বোল্ড (Bold) করার জন্য <b> ট্যাগ ব্যবহার করতে হয়েছে। 
+           যদি আমরা textContent বা innerText ব্যবহার করতাম, তবে ব্রাউজার <b> ট্যাগটিকে 
+           সরাসরি টেক্সট হিসেবে দেখাত (বোল্ড করত না)। 
+           innerHTML ব্যবহার করার ফলে ব্রাউজার বুঝতে পারে যে এটি একটি HTML ট্যাগ এবং 
+           সে অনুযায়ী লেখাটিকে বোল্ড করে দেখায়।
+        */
+        paragraph.innerHTML = "<b>Updated</b> by JavaScript";
+      });
+    </script>
+  </body>
+</html>
