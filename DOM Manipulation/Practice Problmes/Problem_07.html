@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Practice Problem 07</title>
+  </head>
+  <body>
+    <h1>My Task List</h1>
+    <ul>
+      <li>📝 Complete Assignment</li>
+      <li>☕ Drink Coffee</li>
+      <li>🏋️ Go to Gym</li>
+      <li>📖 Read a Book</li>
+    </ul>
+
+    <button id="add-task-btn">Add New Task</button>
+
+    <script>
+      // Q7. Create a new list item <li>New Task</li> and add it to the end of a <ul>
+
+      /* 
+         ১. আন-অর্ডারড লিস্ট (ul) সিলেকশন:
+         document.querySelector("ul") ব্যবহার করে পেজের প্রথম <ul> ট্যাগটিকে সিলেক্ট করা হয়েছে।
+         কেন করছি: যাতে আমরা এই লিস্টের ভেতরে নতুন আইটেম (li) যুক্ত করতে পারি। এটি আমাদের কন্টেইনার হিসেবে কাজ করবে।
+      */
+      let ul = document.querySelector("ul");
+
+      /* 
+         ২. বাটন সিলেকশন:
+         ID (#add-task-btn) ব্যবহার করে বাটনটিকে সিলেক্ট করে 'addTaskBtn' ভেরিয়েবলে রাখা হয়েছে।
+         কেন করছি: কারণ আমরা চাই ইউজার যখন এই বাটনে ক্লিক করবে, তখনই যেন একটি নতুন টাস্ক লিস্টে যোগ হয়।
+      */
+      let addTaskBtn = document.querySelector("#add-task-btn");
+
+      /* 
+         ৩. ইভেন্ট লিসেনার যোগ করা (addEventListener):
+         বাটনটির ওপর একটি 'click' ইভেন্ট লিসেনার বসানো হয়েছে।
+         কেন করছি: এটি ব্রাউজারকে নির্দেশ দেয় যে, বাটনে ক্লিক হওয়া মাত্রই এর ভেতরের ফাংশনটি রান করতে হবে।
+      */
+      addTaskBtn.addEventListener("click", () => {
+        /* 
+           ৪. নতুন এলিমেন্ট তৈরি করা (createElement):
+           document.createElement("li") ব্যবহার করে মেমোরিতে একটি নতুন <li> এলিমেন্ট তৈরি করা হয়েছে।
+           কেন করছি: সরাসরি HTML না লিখে জাভাস্ক্রিপ্টের মাধ্যমে ডাইনামিকভাবে নতুন এলিমেন্ট তৈরি করার জন্য এটি সবচেয়ে স্ট্যান্ডার্ড পদ্ধতি।
+        */
+        let newListItem = document.createElement("li");
+
+        /* 
+           ৫. টেক্সট কন্টেন্ট সেট করা (textContent):
+           নতুন তৈরি হওয়া <li> এলিমেন্টের ভেতরে "New Task" লেখাটি সেট করা হয়েছে।
+           কেন করছি: এলিমেন্টটি তৈরি করার পর সেটি খালি থাকে, তাই ইউজারের বোঝার সুবিধার্থে এতে একটি নাম বা টেক্সট দেওয়া প্রয়োজন।
+        */
+        newListItem.textContent = "New Task";
+
+        /* 
+           ৬. লিস্টে যুক্ত করা (append):
+           append() মেথড ব্যবহার করে নতুন তৈরি করা <li> টিকে আমাদের মূল <ul> এর একদম শেষে যুক্ত করা হয়েছে।
+           
+           কেন করছি: 
+           createElement দিয়ে এলিমেন্ট তৈরি করলে সেটি শুধু মেমোরিতে থাকে, পেজে দেখা যায় না। 
+           append() বা appendChild() ব্যবহার করলে সেটি ব্রাউজারের DOM ট্রিতে যুক্ত হয় এবং ইউজার তা দেখতে পায়।
+        */
+        ul.append(newListItem);
+      });
+
+      /* 
+         সারাংশ: 
+         এই প্র্যাকটিস প্রবলেমে আমরা শিখলাম কীভাবে জাভাস্ক্রিপ্ট ব্যবহার করে সম্পূর্ণ নতুন একটি 
+         HTML এলিমেন্ট তৈরি (Create), তার কন্টেন্ট সেট (Update) এবং সেটিকে বিদ্যমান কোনো 
+         এলিমেন্টের ভেতরে যুক্ত (Append) করতে হয়। এটি ডাইনামিক টু-ডু লিস্ট বা ডাটা লোড 
+         করার ক্ষেত্রে অত্যন্ত প্রয়োজনীয়।
+      */
+    </script>
+  </body>
+</html>
