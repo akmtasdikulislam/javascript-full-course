@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Practice Problem 04</title>
+  </head>
+  <body>
+    <a href="https://www.google.com">Google</a>
+    <button id="update-btn">Update <i>href</i></button>
+
+    <script>
+      // Q4. Select a linkd and upsate its herf to point to https://sheryians.com
+      /* 
+         ১. অ্যাঙ্কর ট্যাগ সিলেকশন (querySelector):
+         document.querySelector("a") ব্যবহার করে পেজের প্রথম <a> ট্যাগটিকে সিলেক্ট করা হয়েছে।
+         কেন করছি: যাতে আমরা এই লিঙ্কের টেক্সট এবং এর গন্তব্য (URL) পরিবর্তন করতে পারি।
+      */
+      let a = document.querySelector("a");
+
+      /* 
+         ২. বাটন সিলেকশন:
+         ID (#update-btn) ব্যবহার করে বাটনটিকে সিলেক্ট করে 'updateBtn' ভেরিয়েবলে রাখা হয়েছে।
+         কেন করছি: কারণ আমরা চাই ইউজার যখন এই বাটনে ক্লিক করবে, তখনই যেন লিঙ্কের পরিবর্তনগুলো ঘটে।
+      */
+      let updateBtn = document.querySelector("#update-btn");
+
+      /* 
+         ৩. ইভেন্ট লিসেনার যোগ করা (addEventListener):
+         বাটনটির ওপর একটি 'click' ইভেন্ট লিসেনার বসানো হয়েছে।
+         কেন করছি: এটি ব্রাউজারকে নির্দেশ দেয় যে, বাটনে ক্লিক হওয়া মাত্রই এর ভেতরের ফাংশনটি রান করতে হবে।
+      */
+      updateBtn.addEventListener("click", () => {
+        /* 
+           ৪. টেক্সট পরিবর্তন (textContent):
+           অ্যাঙ্কর ট্যাগের ভেতরের দৃশ্যমান টেক্সট "Google" থেকে পরিবর্তন করে "Sheryians" করা হয়েছে।
+           কেন করছি: যাতে ইউজার বুঝতে পারে যে লিঙ্কের গন্তব্য বা নাম পরিবর্তন হয়ে গেছে।
+        */
+        a.textContent = "Sheryians";
+
+        /* 
+           ৫. অ্যাট্রিবিউট পরিবর্তন (href):
+           অ্যাঙ্কর ট্যাগের 'href' প্রপার্টি ব্যবহার করে এর লিঙ্কটি পরিবর্তন করা হয়েছে।
+           
+           কেন করছি: 
+           DOM-এ এলিমেন্টের অ্যাট্রিবিউট সরাসরি এক্সেস করা যায়। এখানে আমরা 
+           পুরানো Google-এর লিঙ্কটি বদলে নতুন একটি URL সেট করছি। 
+           এর ফলে এখন লিঙ্কে ক্লিক করলে সেটি নতুন ওয়েবসাইটে নিয়ে যাবে।
+        */
+        a.href = "https://sheryians.com";
+      });
+
+      /* 
+         সারাংশ: এই প্রজেক্টে আমরা শিখলাম কীভাবে জাভাস্ক্রিপ্ট ব্যবহার করে একটি 
+         HTML এলিমেন্টের টেক্সট এবং তার অ্যাট্রিবিউট (যেমন: href) ডাইনামিকভাবে 
+         পরিবর্তন করা যায়।
+      */
+    </script>
+  </body>
+</html>
