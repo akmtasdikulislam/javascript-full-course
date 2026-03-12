@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Practice Problem 05</title>
+  </head>
+  <body>
+    <div>
+      <h4>Welcome</h4>
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt labore
+        totam est adipisci laudantium tenetur repellendus, voluptate dolorem
+        blanditiis? Soluta, nobis accusamus. Eaque delectus est quas nemo
+        temporibus asperiores, iste rerum dignissimos vitae totam quaerat eius,
+        atque iusto autem ratione libero adipisci numquam ipsum explicabo veniam
+        iure consequuntur cupiditate. Rerum?
+      </p>
+    </div>
+    <button id="add-btn">Add title</button>
+
+    <script>
+      // Q5. Add a title attribute to a div dynamically
+
+      /* 
+         ১. ডিভ এলিমেন্ট সিলেকশন (querySelector):
+         document.querySelector("div") ব্যবহার করে পেজের প্রথম <div> ট্যাগটিকে সিলেক্ট করা হয়েছে।
+         কেন করছি: যাতে আমরা এই ডিভ কন্টেইনারের ওপর নতুন কোনো অ্যাট্রিবিউট বা বৈশিষ্ট্য যোগ করতে পারি।
+      */
+      let div = document.querySelector("div");
+
+      /* 
+         ২. বাটন সিলেকশন:
+         ID (#add-btn) ব্যবহার করে বাটনটিকে সিলেক্ট করে 'addBtn' ভেরিয়েবলে রাখা হয়েছে।
+         কেন করছি: কারণ আমরা চাই ইউজার যখন এই বাটনে ক্লিক করবে, তখনই যেন ডিভ-এ পরিবর্তনটি ঘটে।
+      */
+      let addBtn = document.querySelector("#add-btn");
+
+      /* 
+         ৩. ইভেন্ট লিসেনার যোগ করা (addEventListener):
+         বাটনটির ওপর একটি 'click' ইভেন্ট লিসেনার বসানো হয়েছে।
+         কেন করছি: এটি ব্রাউজারকে নির্দেশ দেয় যে, বাটনে ক্লিক হওয়া মাত্রই এর ভেতরের ফাংশনটি রান করতে হবে।
+      */
+      addBtn.addEventListener("click", () => {
+        /* 
+           ৪. অ্যাট্রিবিউট সেট করা (setAttribute):
+           setAttribute মেথড ব্যবহার করে <div> এলিমেন্টে একটি 'title' অ্যাট্রিবিউট যোগ করা হয়েছে।
+           
+           কেন করছি: 
+           'title' অ্যাট্রিবিউট যোগ করার ফলে যখনই ইউজার মাউস কার্সারটি ওই ডিভ-এর ওপর নিয়ে যাবে (Hover), 
+           তখন একটি ছোট টুলটিপ (Tooltip) হিসেবে "Title Added" লেখাটি ভেসে উঠবে। 
+           
+           কিভাবে কাজ করে: 
+           setAttribute দু’টি প্যারামিটার নেয় - প্রথমটি হলো অ্যাট্রিবিউটের নাম ('title') 
+           এবং দ্বিতীয়টি হলো তার ভ্যালু ("Title Added")।
+        */
+        div.setAttribute("title", "Title Added");
+      });
+
+      /* 
+         সারাংশ: এই প্রজেক্টে আমরা শিখলাম কীভাবে setAttribute ব্যবহার করে 
+         রান-টাইমে কোনো HTML এলিমেন্টে নতুন প্রপার্টি বা অ্যাট্রিবিউট যোগ করা যায়। 
+         এটি ইউজার এক্সপেরিয়েন্স উন্নত করতে বা ডাইনামিক ডেটা সেট করতে খুব কার্যকর।
+      */
+    </script>
+  </body>
+</html>
