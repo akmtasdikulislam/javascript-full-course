@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Practice Problem 12</title>
+  </head>
+  <body>
+    <header>
+      <h1>Article on Web Development</h1>
+      <small>Published on: October 2023</small>
+    </header>
+
+    <main>
+      <p>
+        Web development is the work involved in developing a website for the
+        Internet or an intranet.
+      </p>
+      <blockquote>
+        "The web is more a social creation than a technical one." - Tim
+        Berners-Lee
+      </blockquote>
+      <p>
+        It can range from developing a simple single static page of plain text
+        to complex web applications.
+      </p>
+
+      <section>
+        <h2>Frontend vs Backend</h2>
+        <p>
+          Frontend development handles the visual aspects of a website that
+          users interact with.
+        </p>
+        <ul>
+          <li>HTML/CSS</li>
+          <li>JavaScript</li>
+        </ul>
+        <p>
+          Backend development focuses on databases, scripting, and the
+          architecture of websites.
+        </p>
+        <a href="#">Read more about servers...</a>
+      </section>
+    </main>
+
+    <button id="resize-btn">Set Font Size</button>
+
+    <script>
+      // Q12. Set the font size of all <p> elements to 18px using .style
+
+      /* 
+         ১. সব প্যারাগ্রাফ এলিমেন্ট সিলেকশন (querySelectorAll):
+         document.querySelectorAll("p") ব্যবহার করে পেজের সবকটি <p> ট্যাগকে সিলেক্ট করা হয়েছে।
+         কেন করছি: যেহেতু আমাদের একাধিক প্যারাগ্রাফ আছে, তাই querySelectorAll আমাদের একটি 
+         NodeList (অ্যারের মতো লিস্ট) দেয়, যাতে আমরা লুপ চালিয়ে সবার ওপর কাজ করতে পারি।
+      */
+      let paragraphs = document.querySelectorAll("p");
+
+      /* 
+         ২. বাটন সিলেকশন:
+         ID (#resize-btn) ব্যবহার করে বাটনটিকে সিলেক্ট করে 'resizeBtn' ভেরিয়েবলে রাখা হয়েছে।
+         কেন করছি: আমরা চাই ইউজার যখন এই নির্দিষ্ট বাটনে ক্লিক করবে, তখনই যেন ফন্ট সাইজ পরিবর্তনের কাজটি শুরু হয়।
+      */
+      let resizeBtn = document.querySelector("#resize-btn");
+
+      /* 
+         ৩. ইভেন্ট লিসেনার যোগ করা (addEventListener):
+         বাটনটির ওপর একটি 'click' ইভেন্ট লিসেনার বসানো হয়েছে।
+         কেন করছি: এটি ব্রাউজারকে নির্দেশ দেয় যে, বাটনে ক্লিক হওয়া মাত্রই এর ভেতরের ফাংশনটি রান করতে হবে।
+      */
+      resizeBtn.addEventListener("click", () => {
+        /* 
+           ৪. forEach লুপের ব্যবহার:
+           সিলেক্ট করা 'paragraphs' লিস্টের ওপর forEach লুপ চালানো হয়েছে।
+           কেন করছি: যেহেতু paragraphs একটি লিস্ট, তাই প্রতিটি প্যারাগ্রাফকে আলাদা আলাদাভাবে ধরে স্টাইল পরিবর্তন করার জন্য লুপ ব্যবহার করা সবচেয়ে সহজ ও কার্যকর পদ্ধতি।
+        */
+        paragraphs.forEach((p) => {
+          /* 
+             ৫. ইনলাইন স্টাইল পরিবর্তন (.style):
+             প্রতিটি প্যারাগ্রাফের (p) 'style.fontSize' প্রপার্টি ব্যবহার করে সাইজ ১৮ পিক্সেল করা হয়েছে।
+             
+             কেন করছি: 
+             জাভাস্ক্রিপ্টের .style অবজেক্ট ব্যবহার করে সরাসরি HTML এলিমেন্টে CSS যোগ করা যায়। এর ফলে বাটনে ক্লিক করার সাথে সাথে প্যারাগ্রাফগুলোর লেখা বড় হয়ে যাবে, যা রিডিবিলিটি বাড়াতে সাহায্য করে।
+          */
+          p.style.fontSize = "18px";
+        });
+      });
+
+      /* 
+         সারাংশ: এই প্র্যাকটিসে আমরা শিখলাম কীভাবে `querySelectorAll` দিয়ে একাধিক এলিমেন্ট সিলেক্ট করে `forEach` লুপের মাধ্যমে তাদের সবার CSS স্টাইল (যেমন: fontSize) ডাইনামিকভাবে পরিবর্তন করা যায়।
+      */
+    </script>
+  </body>
+</html>
