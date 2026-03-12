@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Practice Problem 06</title>
+  </head>
+  <body>
+    <button id="disabled-btn" disabled>Disabled</button>
+    <button id="enable-btn">Enable Btn</button>
+  </body>
+  <script>
+    // Q6. Remove the disabled attribute from a button.
+
+    /* 
+       ১. ডিজেবলড বাটন সিলেকশন (querySelector):
+       ID (#disabled-btn) ব্যবহার করে প্রথম বাটনটিকে সিলেক্ট করা হয়েছে। 
+       HTML-এ এটি 'disabled' অ্যাট্রিবিউট দিয়ে বন্ধ করে রাখা আছে।
+       কেন করছি: যাতে আমরা পরে জাভাস্ক্রিপ্টের মাধ্যমে এর 'disabled' অবস্থা পরিবর্তন করতে পারি।
+    */
+    let disabledBtn = document.querySelector("#disabled-btn");
+
+    /* 
+       ২. এনাবল বাটন সিলেকশন:
+       ID (#enable-btn) ব্যবহার করে দ্বিতীয় বাটনটিকে সিলেক্ট করা হয়েছে।
+       কেন করছি: এই বাটনটি একটি সুইচ হিসেবে কাজ করবে। ইউজার এখানে ক্লিক করলেই প্রথম বাটনটি সচল হবে।
+    */
+    let enableBtn = document.querySelector("#enable-btn");
+
+    /* 
+       ৩. ইভেন্ট লিসেনার যোগ করা (addEventListener):
+       'enableBtn'-এর ওপর একটি 'click' ইভেন্ট লিসেনার বসানো হয়েছে।
+       কেন করছি: যাতে ক্লিক করার সাথে সাথে ব্রাউজার বুঝতে পারে যে এখন কিছু অ্যাকশন বা পরিবর্তন ঘটাতে হবে।
+    */
+    enableBtn.addEventListener("click", () => {
+      /* 
+         ৪. অ্যাট্রিবিউট রিমুভ করা (removeAttribute):
+         removeAttribute("disabled") মেথডটি ব্যবহার করে প্রথম বাটনের 'disabled' বৈশিষ্ট্যটি মুছে ফেলা হয়েছে।
+         
+         কেন করছি: 
+         HTML-এ কোনো বাটনে 'disabled' অ্যাট্রিবিউট থাকলে সেটি ক্লিক করা যায় না (ধূসর হয়ে থাকে)। 
+         এটি রিমুভ করার ফলে বাটনটি আবার সচল বা 'Active' হয়ে যায় এবং ইউজার সেটিতে ক্লিক করতে পারে।
+      */
+      disabledBtn.removeAttribute("disabled");
+
+      /* 
+         ৫. টেক্সট পরিবর্তন (textContent):
+         বাটনটি এনাবল হওয়ার পর এর ভেতরের লেখা "Disabled" থেকে পরিবর্তন করে "I'm ENABLED!" করা হয়েছে।
+         
+         কেন করছি: 
+         ইউজারকে একটি ভিজ্যুয়াল ফিডব্যাক দেওয়ার জন্য যে, বাটনটি এখন কাজ করার জন্য প্রস্তুত। 
+         textContent ব্যবহার করা হয়েছে কারণ এটি শুধুমাত্র টেক্সট আপডেট করার জন্য দ্রুত এবং নিরাপদ।
+      */
+      disabledBtn.textContent = "I'm ENABLED!";
+    });
+
+    /* 
+       সারাংশ: 
+       এই প্র্যাকটিস প্রবলেমে আমরা শিখলাম কীভাবে `removeAttribute` ব্যবহার করে 
+       যেকোনো HTML অ্যাট্রিবিউট (যেমন: disabled, readonly, hidden) ডাইনামিকভাবে 
+       মুছে ফেলা যায়। এটি ফর্ম ভ্যালিডেশন বা ইউজার ইন্টারফেস কন্ট্রোল করার জন্য 
+       অত্যন্ত গুরুত্বপূর্ণ একটি কৌশল।
+    */
+  </script>
+</html>
