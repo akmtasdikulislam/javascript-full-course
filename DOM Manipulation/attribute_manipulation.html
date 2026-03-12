@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Attribute Manipulation</title>
+  </head>
+  <body>
+    <h1 id="main-title" class="header-text" title="Greeting">Hello World</h1>
+    <img src="placeholder.jpg" alt="Old Image" id="myImage" width="200">
+    <a href="https://google.com" id="myLink">Visit Website</a>
+
+    <script>
+      /* 
+         ১. এলিমেন্ট সিলেক্ট করা:
+         প্রথমে আমরা যে এলিমেন্টগুলোর অ্যাট্রিবিউট পরিবর্তন করতে চাই, সেগুলোকে সিলেক্ট করে ভেরিয়েবলে রাখছি।
+      */
+      const heading = document.querySelector("#main-title");
+      const image = document.querySelector("#myImage");
+      const link = document.querySelector("#myLink");
+
+      /* 
+         ২. getAttribute(attrName):
+         এটি কোনো এলিমেন্টের নির্দিষ্ট একটি অ্যাট্রিবিউটের মান (Value) পাওয়ার জন্য ব্যবহৃত হয়।
+         যদি অ্যাট্রিবিউটটি না থাকে, তবে এটি 'null' রিটার্ন করে।
+      */
+      let titleValue = heading.getAttribute("title"); 
+      console.log(titleValue); // Output: Greeting
+
+      let classValue = heading.getAttribute("class");
+      console.log(classValue); // Output: header-text
+
+      /* 
+         ৩. setAttribute(attrName, value):
+         এটি কোনো এলিমেন্টে নতুন অ্যাট্রিবিউট যোগ করতে বা বিদ্যমান অ্যাট্রিবিউটের মান পরিবর্তন করতে ব্যবহৃত হয়।
+         এখানে আমরা ইমেজের সোর্স (src) এবং অল্টারনেটিভ টেক্সট (alt) পরিবর্তন করছি।
+      */
+      image.setAttribute("src", "https://via.placeholder.com/150"); // ইমেজের সোর্স পরিবর্তন হলো
+      image.setAttribute("alt", "New Dynamic Image"); // অল্টারনেটিভ টেক্সট পরিবর্তন হলো
+      link.setAttribute("target", "_blank"); // নতুন ট্যাব খোলার জন্য target অ্যাট্রিবিউট যোগ করা হলো
+
+      /* 
+         ৪. সরাসরি প্রপার্টি অ্যাক্সেস (Direct Property Access):
+         getAttribute/setAttribute ছাড়াও সরাসরি ডট (.) নোটেশন দিয়ে অনেক অ্যাট্রিবিউট অ্যাক্সেস করা যায়।
+         এটি সাধারণত দ্রুত এবং সহজ। তবে সব কাস্টম অ্যাট্রিবিউটের ক্ষেত্রে এটি কাজ নাও করতে পারে।
+      */
+      console.log(link.href); // Output: https://google.com/
+      link.id = "new-link-id"; // সরাসরি ID পরিবর্তন করা হলো
+
+      /* 
+         ৫. hasAttribute(attrName):
+         কোনো এলিমেন্টে নির্দিষ্ট একটি অ্যাট্রিবিউট আছে কি না তা চেক করার জন্য এটি ব্যবহৃত হয়।
+         এটি true অথবা false রিটার্ন করে। শর্তসাপেক্ষ (Conditional) কোড লেখার জন্য এটি খুব দরকারি।
+      */
+      if (heading.hasAttribute("class")) {
+        console.log("Heading has a class!"); // Output: Heading has a class!
+      }
+
+      /* 
+         ৬. removeAttribute(attrName):
+         কোনো এলিমেন্ট থেকে নির্দিষ্ট একটি অ্যাট্রিবিউট সম্পূর্ণভাবে মুছে ফেলার জন্য এটি ব্যবহৃত হয়।
+         এখানে আমরা h1 থেকে 'title' অ্যাট্রিবিউটটি সরিয়ে দিচ্ছি।
+      */
+      heading.removeAttribute("title"); 
+      console.log(heading.hasAttribute("title")); // Output: false
+
+      /* 
+         ৭. Data Attributes (dataset):
+         HTML5 এ কাস্টম ডেটা রাখার জন্য 'data-*' অ্যাট্রিবিউট ব্যবহার করা হয়। 
+         জাভাস্ক্রিপ্টে এগুলোকে 'dataset' প্রপার্টি দিয়ে খুব সহজে হ্যান্ডেল করা যায়।
+      */
+      // HTML এ নেই এমন একটি ডেটা সেট করা
+      heading.dataset.userId = "12345"; // এটি HTML এ data-user-id="12345" হিসেবে সেভ হবে
+      console.log(heading.dataset.userId); // Output: 12345
+
+      /* 
+         ---------------------------------------------------------
+         সারাংশ ও বেস্ট প্র্যাকটিস (Study Notes):
+         ---------------------------------------------------------
+         
+         * থাম্ব-রুল (Thumb Rule): 
+           - স্ট্যান্ডার্ড অ্যাট্রিবিউট (id, src, value) এর জন্য সরাসরি ডট নোটেশন (element.id) ব্যবহার করা ভালো।
+           - কাস্টম বা নন-স্ট্যান্ডার্ড অ্যাট্রিবিউটের জন্য getAttribute/setAttribute ব্যবহার করা নিরাপদ।
+
+         * কমন মিস্টেক (Common Mistakes):
+           - class পরিবর্তন করার সময় setAttribute("class", "name") ব্যবহার করলে আগের সব ক্লাস মুছে গিয়ে শুধু নতুনটি বসে। 
+             একাধিক ক্লাস ম্যানেজ করতে 'classList' ব্যবহার করা উচিত।
+           - getAttribute দিয়ে কোনো অ্যাট্রিবিউট না পেলে সেটি 'null' দেয়, 'undefined' নয়। এটি চেক করার সময় মাথায় রাখতে হবে।
+
+         * বেস্ট প্র্যাকটিস (Best Practices):
+           - কাস্টম ডেটা স্টোর করার জন্য সবসময় 'data-' প্রিফিক্স ব্যবহার করুন (যেমন: data-price, data-id)।
+           - সরাসরি স্টাইল অ্যাট্রিবিউট (setAttribute('style', ...)) পরিবর্তন না করে CSS ক্লাস টগল করা ভালো।
+
+         * পার্থক্য (Difference):
+           - setAttribute সবসময় স্ট্রিং (String) ইনপুট নেয়। আপনি যদি সংখ্যাও দেন, সেটি স্ট্রিং হয়ে যাবে।
+      */
+    </script>
+  </body>
+</html>
