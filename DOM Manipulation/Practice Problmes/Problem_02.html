@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Practice Problem 02</title>
+  </head>
+  <body>
+    <h1>Random Fruit List</h1>
+    <ul id="fruit-list">
+      <li>🍎 Apple</li>
+      <li>🍌 Banana</li>
+      <li>🥭Mango</li>
+      <li>🍊 Orange</li>
+    </ul>
+
+    <button id="print-list">Print list</button>
+    <script>
+      // Q2. Select all <li> elements and print their text using a loop.
+
+      /* 
+         ১. querySelectorAll ব্যবহার করে এলিমেন্ট সিলেকশন:
+         এখানে 'li' ট্যাগ দিয়ে পেজের সবকটি লিস্ট আইটেমকে সিলেক্ট করা হয়েছে। 
+         এটি একটি 'NodeList' রিটার্ন করে যা অনেকটা অ্যারের মতো।
+         কেন করছি: যাতে আমরা লুপ চালিয়ে প্রতিটি ফলের নাম আলাদাভাবে এক্সেস করতে পারি।
+      */
+      let listItems = document.querySelectorAll("li");
+
+      /* 
+         ২. বাটন সিলেকশন:
+         ID (#print-list) ব্যবহার করে প্রিন্ট বাটনটিকে সিলেক্ট করা হয়েছে।
+         কেন করছি: ইউজার যখন এই বাটনে ক্লিক করবে, তখনই যেন আমাদের লুপটি চালু হয় এবং আউটপুট দেখায়।
+      */
+      let printListBtn = document.querySelector("#print-list");
+
+      /* 
+         ৩. ইভেন্ট লিসেনার (addEventListener):
+         বাটনটিতে একটি 'click' ইভেন্ট যোগ করা হয়েছে। 
+         কেন করছি: যাতে বাটন ক্লিক করার আগ পর্যন্ত কোডটি রান না হয়, শুধুমাত্র ক্লিকের পরেই কাজ শুরু করে।
+      */
+      printListBtn.addEventListener("click", () => {
+        /* 
+           ৪. forEach লুপের ব্যবহার:
+           NodeList-এর ওপর forEach লুপ চালানো হয়েছে যা প্রতিটি 'li' এলিমেন্টকে একে একে ধরবে।
+           কেন করছি: আমাদের কাছে একাধিক 'li' আছে, তাই ম্যানুয়ালি না লিখে লুপের মাধ্যমে সবার টেক্সট বের করা সহজ।
+        */
+        listItems.forEach((item) => {
+          /* 
+             ৫. টেক্সট প্রিন্ট করা (textContent):
+             প্রতিটি 'li' এলিমেন্টের ভেতরের টেক্সট (ফলের নাম) কনসোলে প্রিন্ট করা হচ্ছে।
+             কেন করছি: ইউজারের রিকোয়েস্ট অনুযায়ী লিস্টের ডেটাগুলো আউটপুট হিসেবে দেখার জন্য। 
+             textContent ব্যবহার করা হয়েছে কারণ এটি এলিমেন্টের ভেতরের র-টেক্সট (Raw Text) দেয়।
+          */
+          console.log(item.textContent);
+        });
+      });
+    </script>
+  </body>
+</html>
