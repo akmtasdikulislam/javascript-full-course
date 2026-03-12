@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Practice Problem 08</title>
+  </head>
+  <body>
+    <div>
+      <h4>Welcome</h4>
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt labore
+        totam est adipisci laudantium tenetur repellendus, voluptate dolorem
+        blanditiis? Soluta, nobis accusamus. Eaque delectus est quas nemo
+        temporibus asperiores, iste rerum dignissimos vitae totam quaerat eius,
+        atque iusto autem ratione libero adipisci numquam ipsum explicabo veniam
+        iure consequuntur cupiditate. Rerum?
+      </p>
+    </div>
+    <button id="add-btn">Add Image</button>
+    <script>
+      // Q8. Create a new image element and add it to the top of a div.
+
+      /* 
+         ১. ডিভ এলিমেন্ট সিলেকশন (querySelector):
+         document.querySelector("div") ব্যবহার করে পেজের প্রথম <div> ট্যাগটিকে সিলেক্ট করা হয়েছে।
+         কেন করছি: যাতে আমরা এই ডিভ কন্টেইনারের ভেতরে নতুন একটি ইমেজ এলিমেন্ট ঢোকাতে পারি।
+      */
+      let div = document.querySelector("div");
+
+      /* 
+         ২. বাটন সিলেকশন:
+         ID (#add-btn) ব্যবহার করে বাটনটিকে সিলেক্ট করে 'addBtn' ভেরিয়েবলে রাখা হয়েছে।
+         কেন করছি: কারণ আমরা চাই ইউজার যখন এই বাটনে ক্লিক করবে, তখনই যেন ইমেজটি স্ক্রিনে যোগ হয়।
+      */
+      let addBtn = document.querySelector("#add-btn");
+
+      /* 
+         ৩. নতুন ইমেজ এলিমেন্ট তৈরি করা (createElement):
+         document.createElement("img") ব্যবহার করে মেমোরিতে একটি নতুন <img> ট্যাগ তৈরি করা হয়েছে।
+         কেন করছি: সরাসরি HTML ফাইলে ইমেজ না লিখে জাভাস্ক্রিপ্টের মাধ্যমে ডাইনামিকভাবে ইমেজ তৈরি করার জন্য।
+      */
+      let newImg = document.createElement("img");
+
+      /* 
+         ৪. ইমেজের সোর্স (src) সেট করা:
+         তৈরি করা 'newImg' অবজেক্টের 'src' প্রপার্টিতে একটি অনলাইন ইমেজের লিঙ্ক দেওয়া হয়েছে।
+         কেন করছি: একটি ইমেজ ট্যাগ তখনই ছবি দেখাতে পারে যখন তার একটি সোর্স বা লিঙ্ক থাকে। 
+         এটি ছাড়া ইমেজটি খালি বা ব্রোকেন দেখাবে।
+      */
+      newImg.src =
+        "https://plus.unsplash.com/premium_photo-1719418812953-fcca92314ec0?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fGxhbmRzY2FwZXxlbnwwfHwwfHx8MA%3D%3D";
+
+      /* 
+         ৫. ইভেন্ট লিসেনার যোগ করা (addEventListener):
+         বাটনটির ওপর একটি 'click' ইভেন্ট লিসেনার বসানো হয়েছে।
+         কেন করছি: যাতে বাটন ক্লিক করার সাথে সাথে আমাদের ইমেজটি ডিভ-এর ভেতরে চলে আসে।
+      */
+      addBtn.addEventListener("click", () => {
+        /* 
+           ৬. শুরুতে যুক্ত করা (prepend):
+           prepend() মেথড ব্যবহার করে নতুন তৈরি করা ইমেজটিকে <div> এর একদম শুরুতে (সবার উপরে) যুক্ত করা হয়েছে।
+           
+           কেন করছি: 
+           append() ব্যবহার করলে ইমেজটি ডিভ-এর শেষে (প্যারাগ্রাফের নিচে) যেত। 
+           যেহেতু আমাদের লক্ষ্য হলো ইমেজটিকে সবার উপরে দেখানো, তাই prepend() ব্যবহার করা হয়েছে।
+        */
+        div.prepend(newImg);
+      });
+
+      /* 
+         সারাংশ: এই প্র্যাকটিসে আমরা শিখলাম কীভাবে ডাইনামিকভাবে ইমেজ তৈরি করতে হয় 
+         এবং `prepend()` ব্যবহার করে কোনো কন্টেইনারের শুরুতে নতুন এলিমেন্ট যোগ করতে হয়।
+      */
+    </script>
+  </body>
+</html>
