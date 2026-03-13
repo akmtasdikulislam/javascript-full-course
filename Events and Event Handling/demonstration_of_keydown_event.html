@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Demonstration of 'keydown' event</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+      }
+      #main {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        background: #222;
+      }
+      h1 {
+        font-family: "Artifakt Element";
+        font-size: 20rem;
+        color: #555;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="main">
+      <h1>Enter a key</h1>
+    </div>
+    <script>
+      /* 
+         ১. এলিমেন্ট সিলেকশন:
+         document.querySelector ব্যবহার করে HTML-এর <h1> এলিমেন্টটিকে 'h1' নামক ভেরিয়েবলে রাখা হয়েছে। 
+         যাতে পরবর্তীতে কিবোর্ড ইনপুট অনুযায়ী এই এলিমেন্টের টেক্সট পরিবর্তন করা যায়।
+      */
+      let h1 = document.querySelector("h1");
+
+      /* 
+         ২. 'keydown' ইভেন্ট লিসেনার:
+         'window' অবজেক্টে ইভেন্ট লিসেনার যোগ করা হয়েছে যাতে পুরো পেজের যেকোনো জায়গায় কি (Key) প্রেস করলে এটি কাজ করে।
+         'keydown' ইভেন্টটি তখন ট্রিগার হয় যখন কিবোর্ডের কোনো বাটন চেপে ধরা হয়।
+         'e' (বা event) অবজেক্টটি কিবোর্ড ইভেন্টের যাবতীয় তথ্য (যেমন: কোন কি প্রেস করা হয়েছে) বহন করে।
+      */
+      window.addEventListener("keydown", (e) => {
+        /* 
+           ৩. কন্ডিশনাল লজিক (Space Key Handling):
+           e.key প্রপার্টি চেক করা হচ্ছে। যদি ইউজার 'Space Bar' প্রেস করে, তবে e.key এর ভ্যালু হয় একটি খালি স্ট্রিং " "।
+           যেহেতু খালি স্ট্রিং স্ক্রিনে দেখা যাবে না, তাই আমরা কন্ডিশন দিয়ে লেখাটি "Space" এ পরিবর্তন করছি।
+        */
+        if (e.key === " ") {
+          h1.textContent = "Space"; // Output: Space (যদি Spacebar প্রেস করা হয়)
+        } else {
+          /* 
+             ৪. অন্যান্য কি (Key) প্রদর্শন:
+             যদি স্পেস ছাড়া অন্য কোনো কি (যেমন: A, S, Enter, Shift) প্রেস করা হয়, 
+             তবে সেই কি-এর নাম সরাসরি h1 এর টেক্সট হিসেবে সেট হবে।
+          */
+          h1.textContent = e.key; // Output: A / Enter / Control (প্রেস করা কি অনুযায়ী)
+        }
+      });
+
+      /* 
+         ---------------------------------------------------------
+         গুরুত্বপূর্ণ তথ্য ও Study Notes (Keyboard Events):
+         ---------------------------------------------------------
+         
+         ১. keydown বনাম keyup বনাম keypress:
+            - keydown: বাটন চাপ দেওয়ার সাথে সাথে কাজ করে (সবচেয়ে বেশি ব্যবহৃত)।
+            - keyup: বাটন ছেড়ে দেওয়ার পর কাজ করে।
+            - keypress: এটি এখন 'Deprecated' বা পুরনো হয়ে গেছে, তাই এটি ব্যবহার না করাই ভালো।
+
+         ২. e.key বনাম e.code:
+            - e.key: এটি কি-এর 'Value' দেয় (যেমন: 'a' অথবা 'A' - শিফট চেপে ধরলে বড় হাতের দেখাবে)।
+            - e.code: এটি কি-এর 'Physical Location' দেয় (যেমন: 'KeyA' - এটি সবসময় একই থাকে)।
+
+         ৩. Common Mistakes (সাধারণ ভুল):
+            - স্পেস চেক করার সময় (e.key === "") লেখা। মনে রাখতে হবে স্পেস মানে একটি খালি ঘর " ", একদম খালি স্ট্রিং নয়।
+            - ইভেন্ট লিসেনার শুধু ইনপুট ফিল্ডে দিলে তা পুরো উইন্ডোতে কাজ করবে না। গ্লোবাল ডিটেকশনের জন্য 'window' ব্যবহার করা জরুরি।
+
+         ৪. Best Practices (সেরা নিয়ম):
+            - গেম বা শর্টকাট তৈরির সময় 'keydown' ব্যবহার করা ভালো কারণ এটি দ্রুত রেসপন্স করে।
+            - যদি আপনি চান ইউজার কি চেপে ধরে রাখলে বারবার ইভেন্ট ট্রিগার না হোক, তবে 'keyup' ব্যবহার করুন।
+            - বড় প্রজেক্টে e.key.toLowerCase() ব্যবহার করা নিরাপদ যাতে Case-sensitivity নিয়ে সমস্যা না হয়।
+
+         ৫. Thumb-up Rules:
+            - যখনই কিবোর্ড ইন্টারঅ্যাকশন দরকার (যেমন: এস্কেপ কি দিয়ে মোডাল বন্ধ করা), তখনই keydown ব্যবহার করুন।
+            - স্পেশাল কি (Shift, Alt, Control) হ্যান্ডেল করার জন্য e.shiftKey বা e.ctrlKey প্রপার্টি ব্যবহার করা যায়।
+
+         ৬. Expected Output Flow:
+            - পেজ লোড হবে -> স্ক্রিনে বড় করে "Enter a key" দেখাবে।
+            - ইউজার কিবোর্ডে "S" প্রেস করবে -> স্ক্রিনে "S" দেখাবে।
+            - ইউজার "Spacebar" প্রেস করবে -> স্ক্রিনে "Space" লেখা উঠবে।
+      */
+    </script>
+  </body>
+</html>
