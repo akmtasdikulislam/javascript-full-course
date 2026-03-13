@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Common Events Example</title>
+  </head>
+  <body
+    style="
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      padding: 20px;
+    "
+  >
+    <h1 style="text-align: center; color: #333">
+      JavaScript Common Events Study Guide
+    </h1>
+
+    <!-- ১. Click Event Section -->
+    <div
+      style="
+        background: white;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      "
+    >
+      <h3>1. Click Event</h3>
+      <button
+        id="btn-click"
+        style="
+          padding: 10px 20px;
+          cursor: pointer;
+          background-color: #007bff;
+          color: white;
+          border: none;
+          border-radius: 4px;
+        "
+      >
+        Click Me
+      </button>
+      <p id="click-output">Waiting for click...</p>
+    </div>
+
+    <!-- ২. Input & Change Event Section -->
+    <div
+      style="
+        background: white;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      "
+    >
+      <h3>2. Input vs Change Event</h3>
+      <input
+        type="text"
+        id="input-field"
+        placeholder="Type something (Input event)"
+        style="padding: 8px; width: 250px; margin-bottom: 10px"
+      />
+      <p id="input-output">Input:</p>
+
+      <select id="select-field" style="padding: 8px">
+        <option value="">Select a Color (Change event)</option>
+        <option value="Red">Red</option>
+        <option value="Green">Green</option>
+        <option value="Blue">Blue</option>
+      </select>
+      <p id="change-output">Selected:</p>
+    </div>
+
+    <!-- ৩. Mouse Events Section -->
+    <div
+      style="
+        background: white;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      "
+    >
+      <h3>3. Mouseover & Mouseout</h3>
+      <div
+        id="hover-box"
+        style="
+          width: 150px;
+          height: 150px;
+          background-color: #ddd;
+          display: flex;
+          align-items: center;
+          text-align: center;
+          border-radius: 10px;
+          transition: 0.3s;
+        "
+      >
+        Hover over me!
+      </div>
+    </div>
+
+    <!-- ৪. Keyboard Events Section -->
+    <div
+      style="
+        background: white;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      "
+    >
+      <h3>4. Keyup Event</h3>
+      <input
+        type="text"
+        id="keyup-field"
+        placeholder="Press any key..."
+        style="padding: 8px; width: 250px"
+      />
+      <p id="keyup-output">Last key pressed:</p>
+    </div>
+
+    <!-- ৫. Submit Event Section -->
+    <div
+      style="
+        background: white;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      "
+    >
+      <h3>5. Submit Event (Form)</h3>
+      <form id="my-form">
+        <input
+          type="text"
+          id="username"
+          placeholder="Enter Username"
+          required
+          style="padding: 8px"
+        />
+        <button
+          type="submit"
+          style="
+            padding: 8px 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+          "
+        >
+          Submit
+        </button>
+      </form>
+      <p id="form-output" style="color: green; font-weight: bold"></p>
+    </div>
+
+    <script>
+      /* 
+         ---------------------------------------------------------
+         ১. Click Event: মাউস দিয়ে ক্লিক করলে ট্রিগার হয়।
+         ---------------------------------------------------------
+      */
+      const clickBtn = document.querySelector("#btn-click");
+      const clickOut = document.querySelector("#click-output");
+
+      clickBtn.addEventListener("click", function () {
+        /* 
+           বাটনে ক্লিক করলে প্যারাগ্রাফের টেক্সট এবং কালার পরিবর্তন হবে।
+           এটি ইউজার ইন্টারঅ্যাকশন বোঝার সবচেয়ে সাধারণ উপায়।
+        */
+        clickOut.innerText = "Button was clicked!"; // Output: Button was clicked!
+        clickOut.style.color = "blue";
+      });
+
+      /* 
+         ---------------------------------------------------------
+         ২. Input Event: ইনপুট ফিল্ডে প্রতিটি ক্যারেক্টার টাইপ করার সাথে সাথে ট্রিগার হয়।
+         ---------------------------------------------------------
+      */
+      const inputField = document.querySelector("#input-field");
+      const inputOut = document.querySelector("#input-output");
+
+      inputField.addEventListener("input", function (event) {
+        /* 
+           event.target.value দিয়ে ইনপুট বক্সের বর্তমান ভ্যালু পাওয়া যায়।
+           এটি রিয়েল-টাইম সার্চ বা ভ্যালিডেশনের জন্য ব্যবহৃত হয়।
+        */
+        inputOut.innerText = `Input: ${event.target.value}`; // Output: Input: [Typed Text]
+      });
+
+      /* 
+         ---------------------------------------------------------
+         ৩. Change Event: যখন এলিমেন্টের ভ্যালু পরিবর্তন শেষ হয় (যেমন: ড্রপডাউন সিলেক্ট করা)।
+         ---------------------------------------------------------
+      */
+      const selectField = document.querySelector("#select-field");
+      const changeOut = document.querySelector("#change-output");
+
+      selectField.addEventListener("change", function (event) {
+        /* 
+           ইনপুট ইভেন্টের মতো এটি প্রতিবার টাইপে কাজ করে না, 
+           বরং ভ্যালু ফাইনাল হওয়ার পর (Focus হারানো বা অপশন সিলেক্ট করা) কাজ করে।
+        */
+        changeOut.innerText = `Selected: ${event.target.value}`; // Output: Selected: Red/Green/Blue
+        changeOut.style.color = event.target.value;
+      });
+
+      /* 
+         ---------------------------------------------------------
+         ৪. Mouseover & Mouseout: হোভার ইফেক্ট তৈরি করতে ব্যবহৃত হয়।
+         ---------------------------------------------------------
+      */
+      const hoverBox = document.querySelector("#hover-box");
+
+      hoverBox.addEventListener("mouseover", function () {
+        /* মাউস যখন বক্সের ভেতরে ঢুকবে */
+        hoverBox.style.backgroundColor = "#ffc107";
+        hoverBox.innerText = "Mouse is Inside!"; // Output: Mouse is Inside!
+      });
+
+      hoverBox.addEventListener("mouseout", function () {
+        /* মাউস যখন বক্স থেকে বের হয়ে যাবে */
+        hoverBox.style.backgroundColor = "#ddd";
+        hoverBox.innerText = "Hover over me!"; // Output: Hover over me!
+      });
+
+      /* 
+         ---------------------------------------------------------
+         ৫. Keyup Event: কিবোর্ড থেকে কোনো কি (Key) ছেড়ে দিলে ট্রিগার হয়।
+         ---------------------------------------------------------
+      */
+      const keyupField = document.querySelector("#keyup-field");
+      const keyupOut = document.querySelector("#keyup-output");
+
+      keyupField.addEventListener("keyup", function (event) {
+        /* 
+           event.key প্রপার্টি দিয়ে কোন কি প্রেস করা হয়েছে তা জানা যায়।
+           এটি শর্টকাট কি বা গেম কন্ট্রোল তৈরিতে কাজে লাগে।
+        */
+        keyupOut.innerText = `Last key pressed: ${event.key}`; // Output: Last key pressed: Enter/A/Shift...
+      });
+
+      /* 
+         ---------------------------------------------------------
+         ৬. Submit Event: ফর্ম সাবমিট করার সময় ট্রিগার হয়।
+         ---------------------------------------------------------
+      */
+      const myForm = document.querySelector("#my-form");
+      const formOut = document.querySelector("#form-output");
+
+      myForm.addEventListener("submit", function (event) {
+        /* 
+           event.preventDefault() অত্যন্ত গুরুত্বপূর্ণ। 
+           এটি পেজকে রিফ্রেশ হওয়া থেকে আটকায় যাতে আমরা জাভাস্ক্রিপ্ট দিয়ে ডাটা প্রসেস করতে পারি।
+        */
+        event.preventDefault();
+        const user = document.querySelector("#username").value;
+        formOut.innerText = `Form Submitted Successfully for: ${user}`; // Output: Form Submitted Successfully...
+      });
+
+      /* 
+         ---------------------------------------------------------
+         গুরুত্বপূর্ণ তথ্য ও Best Practices (Learning Notes):
+         ---------------------------------------------------------
+         
+         ১. Input vs Change:
+            - Input: প্রতিবার টাইপ করার সাথে সাথে কাজ করে (Real-time)।
+            - Change: টাইপ শেষ করে বক্সের বাইরে ক্লিক করলে বা ড্রপডাউন সিলেক্ট করলে কাজ করে।
+
+         ২. Keydown vs Keyup:
+            - Keydown: কি চেপে ধরার সাথে সাথে কাজ শুরু করে (বার বার ট্রিগার হতে পারে)।
+            - Keyup: কি ছেড়ে দেওয়ার পর মাত্র একবার কাজ করে।
+
+         ৩. preventDefault():
+            - এটি মূলত 'submit' এবং 'click' (লিঙ্কের ক্ষেত্রে) ইভেন্টে বেশি ব্যবহৃত হয়।
+            - ব্রাউজারের ডিফল্ট আচরণ (যেমন পেজ রিলোড) বন্ধ করতে এটি ব্যবহার করা হয়।
+
+         ৪. Common Mistakes (সাধারণ ভুল):
+            - ফর্মের ভেতর বাটনে ক্লিক ইভেন্ট না দিয়ে ফর্মের ওপর 'submit' ইভেন্ট দেওয়া উচিত।
+            - ইভেন্ট লিসেনারে ফাংশন কল করে ফেলা (যেমন: addEventListener('click', myFunc()) )। 
+              সঠিক হলো শুধু নাম দেওয়া (myFunc)।
+
+         ৫. Best Practices:
+            - সবসময় meaningful variable name ব্যবহার করুন (যেমন: btnClick এর বদলে submitButton)।
+            - DOM এলিমেন্টগুলো স্ক্রিপ্টের শুরুতে সিলেক্ট করে রাখা ভালো।
+            - যদি অনেকগুলো একই ধরণের এলিমেন্ট থাকে, তবে Event Delegation ব্যবহার করা বুদ্ধিমানের কাজ।
+
+         ৬. Dos & Don'ts:
+            - Do: ইউজারকে ভিজ্যুয়াল ফিডব্যাক দিন (যেমন: বাটন ক্লিক করলে কালার চেঞ্জ বা লোডার দেখানো)।
+            - Don't: একই এলিমেন্টে অপ্রয়োজনীয় অনেক ইভেন্ট যোগ করবেন না, এতে পারফরম্যান্স কমতে পারে।
+      */
+    </script>
+  </body>
+</html>
