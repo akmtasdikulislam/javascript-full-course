@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Demonstration of 'change' event</title>
+  </head>
+  <body style="font-family: Arial, sans-serif; padding: 20px">
+    <h1>Select you device</h1>
+    <select>
+      <!-- 
+         'selected' এবং 'disabled' অ্যাট্রিবিউট ব্যবহার করা হয়েছে যাতে 
+         প্রথম অপশনটি ডিফল্টভাবে দেখা যায় কিন্তু ইউজার এটি পুনরায় সিলেক্ট করতে না পারে।
+      -->
+      <option selected disabled>Choose your device</option>
+      <option value="Samsung">Samsung</option>
+      <option value="Xioami">Xioami</option>
+      <option value="Oppo">Oppo</option>
+      <option value="Honor">Honor</option>
+    </select>
+
+    <script>
+      /* 
+         ১. এলিমেন্ট সিলেকশন:
+         document.querySelector ব্যবহার করে HTML এলিমেন্টগুলোকে জাভাস্ক্রিপ্ট ভেরিয়েবলে রাখা হয়েছে।
+         'sel' ভেরিয়েবলটি ড্রপডাউনকে এবং 'h1' ভেরিয়েবলটি শিরোনামকে রিপ্রেজেন্ট করছে।
+      */
+      let sel = document.querySelector("select");
+      let h1 = document.querySelector("h1");
+
+      /* 
+         ২. 'change' ইভেন্ট লিসেনার:
+         'change' ইভেন্টটি তখন ট্রিগার হয় যখন ইউজার ড্রপডাউন থেকে নতুন কোনো অপশন সিলেক্ট করে।
+         'dets' (বা event) অবজেক্টটি ইভেন্টের যাবতীয় তথ্য বহন করে।
+      */
+      sel.addEventListener("change", (dets) => {
+        /* 
+           dets.target.value এর মাধ্যমে সিলেক্ট করা অপশনের 'value' প্রপার্টি পাওয়া যায়।
+           textContent ব্যবহার করে h1 এর ভেতরের লেখা পরিবর্তন করা হচ্ছে।
+        */
+        h1.textContent = `Selected Device: ${dets.target.value}`; // Output: Selected Device: Samsung (যদি Samsung সিলেক্ট করা হয়)
+      });
+
+      /* 
+         ---------------------------------------------------------
+         গুরুত্বপূর্ণ তথ্য ও Study Notes:
+         ---------------------------------------------------------
+         
+         ১. 'change' বনাম 'input' ইভেন্ট:
+            - ড্রপডাউন (Select), চেকবক্স বা রেডিও বাটনের ক্ষেত্রে 'change' ইভেন্ট সবচেয়ে কার্যকর।
+            - টেক্সট ইনপুটের ক্ষেত্রে 'input' ইভেন্ট প্রতি ক্যারেক্টারে কাজ করে, কিন্তু 'change' ইভেন্ট কাজ করে যখন ইউজার টাইপ শেষ করে বক্সের বাইরে ক্লিক করে।
+
+         ২. Common Mistakes (সাধারণ ভুল):
+            - <option> ট্যাগে 'value' অ্যাট্রিবিউট না দেওয়া। value না থাকলে ব্রাউজার অপশনের ভেতরের টেক্সটকে ভ্যালু হিসেবে ধরে নেয়, যা অনেক সময় কনফিউশন তৈরি করে।
+            - ইভেন্ট হ্যান্ডলারে 'dets.target.value' এর বদলে শুধু 'dets.value' লেখা (এটি কাজ করবে না)।
+
+         ৩. Best Practices (সেরা নিয়ম):
+            - ড্রপডাউনের প্রথম অপশনটি 'disabled' এবং 'selected' রাখা ভালো, 
+              যাতে ইউজারকে একটি পরিষ্কার ইন্সট্রাকশন দেওয়া যায়।
+            - আইডি (ID) ব্যবহার করে এলিমেন্ট সিলেক্ট করা বেশি নিরাপদ (যেমন: querySelector("#mySelect"))।
+
+         ৪. Thumb-up Rules:
+            - যখনই কোনো ফর্ম এলিমেন্টের স্টেট (State) পরিবর্তন হবে এবং আপনি সেই আপডেটটি ইউজারকে দেখাতে চান, তখনই 'change' ইভেন্ট ব্যবহার করুন।
+            - ডাইনামিক ডাটা ফিল্টারিং বা ক্যাটাগরি সিলেকশনের জন্য এটি অপরিহার্য।
+
+         ৫. Expected Output Flow:
+            - পেজ লোড হবে -> "Select you device" দেখাবে।
+            - ইউজার "Oppo" সিলেক্ট করবে।
+            - সাথে সাথে শিরোনাম বদলে হবে "Selected Device: Oppo"।
+      */
+    </script>
+  </body>
+</html>
