@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Click using JavaScript</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        font-family: "Artifakt Element";
+        font-weight: 600;
+        margin: 0;
+        padding: 0;
+      }
+      html,
+      body {
+        height: 100%;
+        width: 100%;
+      }
+      #main {
+        align-items: center;
+        background: #222;
+        display: flex;
+        flex-direction: column;
+        gap: 2em;
+        height: 100%;
+        justify-content: center;
+        width: 100%;
+      }
+      input[type="file"] {
+        display: none;
+      }
+      #btn {
+        background: #1ce9b5;
+        border-radius: 0.25rem;
+        border: 0;
+        color: #1e1b18;
+        cursor: pointer;
+        font-weight: 700;
+        padding: 0.5rem 1.5rem;
+        transition: all 0.3s ease-in-out;
+      }
+      #btn:hover {
+        background: #139b79;
+      }
+      #file-info {
+        display: none;
+        text-align: center;
+        font-size: 3em;
+      }
+      #file-info p {
+        color: #666;
+        font-size: 1.5rem;
+      }
+      #file-info h3 {
+        color: #666;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="main">
+      <input type="file" id="file_input" />
+      <div id="file-info">
+        <h3>File Upload Successfully 🎉</h3>
+        <p id="file_name"></p>
+      </div>
+      <button id="btn">Upload File</button>
+    </div>
+    <script>
+      /* 
+         ১. এলিমেন্ট সিলেকশন (Element Selection):
+         document.querySelector ব্যবহার করে HTML এলিমেন্টগুলোকে জাভাস্ক্রিপ্ট ভেরিয়েবলে রাখা হয়েছে।
+         যাতে পরবর্তীতে এগুলোর ওপর ইভেন্ট লিসেনার বা স্টাইল অ্যাপ্লাই করা যায়।
+      */
+      let btn = document.querySelector("#btn");
+      let file_input = document.querySelector("input"); // প্রথম input ট্যাগটি সিলেক্ট করা হয়েছে
+      let file_info = document.querySelector("#file-info");
+      let file_name = document.querySelector("#file_name");
+
+      /* 
+         ২. কাস্টম বাটন ক্লিক হ্যান্ডলার:
+         ব্রাউজারের ডিফল্ট ফাইল ইনপুট দেখতে সুন্দর হয় না, তাই আমরা সেটিকে CSS দিয়ে 
+         'display: none' করে রেখেছি। যখন ইউজার আমাদের তৈরি করা সুন্দর '#btn' এ ক্লিক করবে, 
+         তখন জাভাস্ক্রিপ্টের মাধ্যমে আমরা হিডেন ইনপুট ফিল্ডটিকে ক্লিক করাবো।
+      */
+      btn.addEventListener("click", () => {
+        /* 
+           .click() মেথডটি ম্যানুয়ালি ইনপুট ফিল্ডের ক্লিক ইভেন্ট ট্রিগার করে।
+           এর ফলে ইউজারের সামনে ফাইল সিলেক্ট করার উইন্ডোটি ওপেন হয়।
+        */
+        file_input.click(); // Output: ফাইল সিলেকশন উইন্ডো ওপেন হবে
+      });
+
+      /* 
+         ৩. 'change' ইভেন্ট লিসেনার:
+         ফাইল ইনপুট ফিল্ডে যখন কোনো ফাইল সিলেক্ট করা হয় (অর্থাৎ ভ্যালু পরিবর্তন হয়), 
+         তখন 'change' ইভেন্টটি ট্রিগার হয়।
+      */
+      file_input.addEventListener("change", (e) => {
+        /* 
+           e.target.files একটি ফাইল লিস্ট (FileList) অবজেক্ট রিটার্ন করে। 
+           যেহেতু আমরা একটি ফাইল আপলোড করছি, তাই ইনডেক্স [0] থেকে ফাইলটি নেওয়া হয়েছে।
+        */
+        let file = e.target.files[0]; // Output: সিলেক্ট করা ফাইলের অবজেক্ট পাওয়া যাবে
+
+        /* 
+           চেক করা হচ্ছে ফাইলটি সঠিকভাবে সিলেক্ট হয়েছে কি না। 
+           যদি ইউজার ফাইল সিলেক্ট না করে ক্যানসেল করে দেয়, তবে 'file' ভেরিয়েবলটি undefined থাকবে।
+        */
+        if (file) {
+          /* 
+             file.name প্রপার্টি ব্যবহার করে সিলেক্ট করা ফাইলের নাম পাওয়া যায়।
+             textContent এর মাধ্যমে প্যারাগ্রাফে সেই নামটি সেট করা হচ্ছে।
+          */
+          file_name.textContent = `File Name: ${file.name}`; // Output: File Name: image.jpg (উদাহরণস্বরূপ)
+
+          /* 
+             ফাইল সিলেক্ট হওয়ার পর তথ্যগুলো দেখানোর জন্য কন্টেইনারের ডিসপ্লে 'block' করা হচ্ছে।
+          */
+          file_info.style.display = "block"; // Output: সাকসেস মেসেজ স্ক্রিনে দেখা যাবে
+        }
+      });
+
+      /* 
+         ---------------------------------------------------------
+         গুরুত্বপূর্ণ তথ্য ও Study Notes:
+         ---------------------------------------------------------
+         
+         ১. কেন 'change' ইভেন্ট?
+            - ফাইল ইনপুটের ক্ষেত্রে 'input' ইভেন্টের চেয়ে 'change' বেশি কার্যকর কারণ ফাইল 
+              সিলেকশন সম্পন্ন হওয়ার পরই আমরা ডাটা প্রসেস করতে চাই।
+
+         ২. Common Mistakes (সাধারণ ভুল):
+            - e.target.value ব্যবহার করা: এটি শুধু ফাইলের পাথ (Fake Path) দেয়। 
+              ফাইলের বিস্তারিত তথ্যের জন্য e.target.files ব্যবহার করতে হবে।
+            - Multiple Files: যদি ইনপুটে 'multiple' অ্যাট্রিবিউট থাকে, তবে লুপ চালিয়ে 
+              e.target.files থেকে সব ফাইল বের করতে হয়।
+
+         ৩. Best Practices (সেরা নিয়ম):
+            - সিকিউরিটির জন্য এবং ইউজার এক্সপেরিয়েন্স ভালো করতে ডিফল্ট ইনপুট হাইড করে 
+              কাস্টম বাটন ব্যবহার করা একটি স্ট্যান্ডার্ড প্র্যাকটিস।
+            - ফাইল আপলোডের আগে ফাইলের সাইজ (file.size) চেক করে ভ্যালিডেশন করা উচিত।
+
+         ৪. Thumb-up Rules:
+            - যখনই কোনো হিডেন এলিমেন্টকে অন্য এলিমেন্ট দিয়ে কন্ট্রোল করতে হবে, 
+              তখন .click() মেথডটি ব্যবহার করুন।
+            - ফাইল হ্যান্ডলিং এর সময় সবসময় 'if (file)' কন্ডিশন দিয়ে চেক করে নিন।
+      */
+    </script>
+  </body>
+</html>
