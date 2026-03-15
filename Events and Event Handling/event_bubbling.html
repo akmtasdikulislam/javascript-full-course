@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Demonstration of Event Bubbling</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        font-family: "Artifakt Element";
+        font-weight: 600;
+        margin: 0;
+        padding: 0;
+      }
+      html,
+      body {
+        height: 100%;
+        width: 100%;
+      }
+      #main {
+        width: 100%;
+        height: 100%;
+        background: #222;
+      }
+      #nav {
+        width: 100%;
+        height: 100px;
+        background: #555;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+      }
+      a {
+        color: white;
+      }
+      #btn {
+        background: hsl(165, 78%, 30%);
+        border-radius: 0.25rem;
+        border: 0;
+        color: white;
+        cursor: pointer;
+        font-weight: 700;
+        padding: 0.5rem 1.5rem;
+        transition: all 0.3s ease-in-out;
+      }
+      #btn:hover {
+        background: hsl(165, 78%, 24%);
+      }
+      ul {
+        color: white;
+        padding-left: 2rem;
+      }
+      .lt {
+        text-decoration: line-through;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="main">
+      <div id="nav">
+        <a href="">Home</a>
+        <a href="">About</a>
+        <button id="btn">Click and Follow</button>
+      </div>
+      <br />
+      <ul>
+        <li>🍎 Apple</li>
+        <li>🍌 Banana</li>
+        <li>🍇 Grapes</li>
+        <li>🍓 Strawberry</li>
+        <li>🍉 Watermelon</li>
+      </ul>
+    </div>
+    <script>
+      /* 
+         ১. ইভেন্ট বাবলিং (Event Bubbling) ডেমোস্ট্রেশন:
+         যখন আপনি একটি চাইল্ড এলিমেন্টে (যেমন: <a> বা <button>) ক্লিক করেন, 
+         সেই ক্লিক ইভেন্টটি স্বয়ংক্রিয়ভাবে তার প্যারেন্ট এলিমেন্টগুলোর দিকে ছড়িয়ে পড়ে। 
+         এখানে #nav এর ভেতরে থাকা যেকোনো কিছুতে ক্লিক করলে এই অ্যালার্টটি দেখাবে।
+      */
+      document.querySelector("#nav").addEventListener("click", () => {
+        alert("Clicked! 👆"); // Output: ব্রাউজারে একটি অ্যালার্ট বক্স দেখাবে
+      });
+
+      /* 
+         ২. এলিমেন্ট সিলেকশন:
+         <ul> ট্যাগটিকে সিলেক্ট করে 'ul' ভেরিয়েবলে রাখা হয়েছে। 
+         আমরা প্রতিটি <li> তে আলাদা করে লিসেনার না দিয়ে শুধু প্যারেন্ট <ul> এ লিসেনার দেবো।
+      */
+      let ul = document.querySelector("ul");
+
+      /* 
+         ৩. ইভেন্ট ডেলিগেশন (Event Delegation):
+         এটি একটি অত্যন্ত শক্তিশালী টেকনিক। এখানে আমরা <ul> এ ক্লিক ইভেন্ট দিয়েছি। 
+         যখন কোনো <li> তে ক্লিক করা হয়, বাবলিং এর কারণে সেই ইভেন্টটি <ul> এ পৌঁছায়। 
+         'e.target' ব্যবহার করে আমরা ঠিক কোন <li> তে ক্লিক হয়েছে তা শনাক্ত করতে পারি।
+      */
+      ul.addEventListener("click", function (e) {
+        /* 
+           classList.toggle("lt"): 
+           যদি 'lt' ক্লাসটি এলিমেন্টে না থাকে তবে এটি যোগ করবে, আর থাকলে সরিয়ে দেবে। 
+           এর ফলে টেক্সটের ওপর দিয়ে একটি দাগ (Line-through) আসবে এবং যাবে।
+        */
+        e.target.classList.toggle("lt"); // Output: ক্লিক করা ফলের নামের ওপর দাগ পড়বে বা মুছে যাবে
+      });
+
+      /* 
+         ---------------------------------------------------------
+         গুরুত্বপূর্ণ তথ্য ও Study Notes (Event Bubbling & Delegation):
+         ---------------------------------------------------------
+         
+         ১. ইভেন্ট বাবলিং (Event Bubbling) কী?
+            - যখন কোনো এলিমেন্টে ইভেন্ট ঘটে, তখন সেটি প্রথমে ওই এলিমেন্টে রান হয়, তারপর তার প্যারেন্টে, তারপর তারও প্যারেন্টে—এভাবে একদম <html> পর্যন্ত যায়। একে পানির নিচের বুদবুদ (Bubble) উপরে ওঠার সাথে তুলনা করা হয়।
+
+         ২. e.target বনাম e.currentTarget:
+            - e.target: এটি সেই আসল এলিমেন্ট যেটিতে ইউজার সরাসরি ক্লিক করেছে।
+            - e.currentTarget: এটি সেই এলিমেন্ট যেটিতে আপনি addEventListener যুক্ত করেছেন (এখানে <ul>)।
+
+         ৩. ইভেন্ট বাবলিং বন্ধ করা (stopPropagation):
+            - যদি আপনি চান চাইল্ডে ক্লিক করলে প্যারেন্টের ইভেন্ট ট্রিগার না হোক, তবে e.stopPropagation() ব্যবহার করতে হয়।
+
+         ৪. কেন ইভেন্ট ডেলিগেশন ব্যবহার করবেন? (Best Practices):
+            - Performance: যদি আপনার লিস্টে ১০০০টি আইটেম থাকে, তবে ১০০০টি আলাদা লিসেনার তৈরি করা মেমোরির জন্য ক্ষতিকর। একটি প্যারেন্ট লিসেনার ব্যবহার করা অনেক সাশ্রয়ী।
+            - Dynamic Elements: যদি জাভাস্ক্রিপ্ট দিয়ে পরে নতুন কোনো <li> যোগ করা হয়, তবে ডেলিগেশন ব্যবহার করলে নতুন আইটেমটির জন্যও ইভেন্ট অটোমেটিক কাজ করবে।
+
+         ৫. Common Mistakes (সাধারণ ভুল):
+            - ডেলিগেশন করার সময় e.target চেক না করা। অনেক সময় প্যারেন্ট বর্ডারে ক্লিক করলেও ইভেন্ট ট্রিগার হতে পারে, তাই if(e.target.tagName === 'LI') দিয়ে চেক করা নিরাপদ।
+            - বাবলিং এর কথা ভুলে গিয়ে প্যারেন্ট এবং চাইল্ড উভয় জায়গায় একই ইভেন্ট দেওয়া, এতে একটি ক্লিকেই দুটি ফাংশন রান হয়ে কনফিউশন তৈরি করতে পারে।
+
+         ৬. Thumb-up Rules:
+            - যখন অনেকগুলো সিমিলার চাইল্ড এলিমেন্ট থাকে (যেমন: List, Grid, Table), তখন সবসময় ইভেন্ট ডেলিগেশন ব্যবহার করুন।
+            - মেনু বা ড্রপডাউন তৈরির সময় বাবলিং এর দিকে খেয়াল রাখুন যাতে বাইরে ক্লিক করলে মেনু বন্ধ হয়।
+
+         ৭. Expected Output Flow:
+            - নেভিগেশন বারের (Home, About বা Button) যেকোনো জায়গায় ক্লিক করলে "Clicked! 👆" অ্যালার্ট আসবে।
+            - ফলের লিস্টের (Apple, Banana ইত্যাদি) যেকোনো একটিতে ক্লিক করলে সেটির ওপর দাগ (Strike-through) পড়বে।
+            - পুনরায় ক্লিক করলে দাগটি চলে যাবে।
+      */
+    </script>
+  </body>
+</html>
