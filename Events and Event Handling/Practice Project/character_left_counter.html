@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Character Left Counter</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        font-family: "Artifakt Element";
+        font-weight: 600;
+        margin: 0;
+        padding: 0;
+      }
+      html,
+      body {
+        height: 100%;
+        width: 100%;
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: #222;
+      }
+      h1 {
+        color: #555;
+        font-size: 5rem;
+        font-weight: bold;
+      }
+      input {
+        width: 25rem;
+        height: auto;
+        padding: 0.5rem;
+        margin-bottom: 2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <input type="text" name="" id="" placeholder="Write anything" />
+    <h1>Characters Left: <span>20</span></h1>
+    <script>
+      /* 
+         ১. এলিমেন্ট সিলেকশন (Element Selection):
+         document.querySelector ব্যবহার করে HTML-এর <input> এবং <span> এলিমেন্ট দুটিকে 
+         জাভাস্ক্রিপ্ট ভেরিয়েবলে (inp এবং span) স্টোর করা হয়েছে। 
+         যাতে পরবর্তীতে এগুলোর ভ্যালু পড়া এবং স্টাইল পরিবর্তন করা সহজ হয়।
+      */
+      let inp = document.querySelector("input");
+      let span = document.querySelector("span"); // Output: <span> এলিমেন্টটি সিলেক্ট হবে
+
+      /* 
+         ২. 'input' ইভেন্ট লিসেনার:
+         ইনপুট ফিল্ডে যখনই কোনো ক্যারেক্টার টাইপ করা হয়, মুছে ফেলা হয় বা পেস্ট করা হয়, 
+         তখনই 'input' ইভেন্টটি রিয়েল-টাইমে ট্রিগার হয়। 
+         এটি 'keyup' এর চেয়ে ভালো কারণ এটি মাউস দিয়ে টেক্সট পেস্ট করলেও কাজ করে।
+      */
+      inp.addEventListener("input", function () {
+        /* 
+           ৩. ক্যারেক্টার লেফট ক্যালকুলেশন:
+           আমরা সর্বোচ্চ ২০টি ক্যারেক্টার এলাউ করছি। 
+           ২০ থেকে বর্তমান ইনপুটের দৈর্ঘ্য (inp.value.length) বিয়োগ করে 
+           অবশিষ্ট সংখ্যাটি 'left' ভেরিয়েবলে রাখা হচ্ছে।
+        */
+        let left = 20 - inp.value.length;
+
+        /* 
+           ৪. আউটপুট প্রদর্শন:
+           হিসাবকৃত 'left' ভ্যালুটিকে <span> ট্যাগের ভেতরে টেক্সট হিসেবে বসানো হচ্ছে।
+        */
+        span.textContent = left; // Output: অবশিষ্ট সংখ্যা (যেমন: 15, 5, -2)
+
+        /* 
+           ৫. কন্ডিশনাল স্টাইলিং (Visual Feedback):
+           যদি অবশিষ্ট সংখ্যা ০ এর নিচে চলে যায় (অর্থাৎ লিমিট পার হয়ে যায়), 
+           তবে সতর্কবার্তা হিসেবে সংখ্যাটির রঙ লাল (crimson) করে দেওয়া হচ্ছে। 
+           অন্যথায় এটি স্বাভাবিক ধূসর (#555) রঙে থাকবে।
+        */
+        if (left < 0) {
+          span.style.color = "crimson"; // Output: সংখ্যাটি লাল হয়ে যাবে
+        } else {
+          span.style.color = "#555"; // Output: সংখ্যাটি স্বাভাবিক রঙে থাকবে
+        }
+      });
+
+      /* 
+         ---------------------------------------------------------
+         গুরুত্বপূর্ণ তথ্য ও Study Notes (Character Left Counter):
+         ---------------------------------------------------------
+         
+         ১. কেন 'input' ইভেন্ট ব্যবহার করা হয়েছে?
+            - 'input' ইভেন্ট কিবোর্ড টাইপিং, কপি-পেস্ট বা ড্র্যাগ-অ্যান্ড-ড্রপ—সব ক্ষেত্রেই কাজ করে।
+            - এটি রিয়েল-টাইম ভ্যালিডেশনের জন্য সবচেয়ে নির্ভরযোগ্য ইভেন্ট।
+
+         ২. Common Mistakes (সাধারণ ভুল):
+            - span.value ব্যবহার করা: মনে রাখতে হবে <span> কোনো ইনপুট এলিমেন্ট নয়, তাই এর কন্টেন্ট পরিবর্তনের জন্য textContent বা innerHTML ব্যবহার করতে হয়।
+            - লিমিট চেক করতে ভুলে যাওয়া: যদি আপনি চান ইউজার ২০ এর বেশি টাইপ করতে পারবে না, তবে HTML-এ maxlength="20" ব্যবহার করা উচিত।
+
+         ৩. Best Practices (সেরা নিয়ম):
+            - ইউজারকে ভিজ্যুয়াল ফিডব্যাক দেওয়া (যেমন এখানে রঙ পরিবর্তন করা হয়েছে) একটি ভালো UX।
+            - যদি আপনি চান স্পেস (Space) গণনা হবে না, তবে .trim() ব্যবহার করে স্পেস বাদ দিয়ে কাউন্ট করতে পারেন।
+
+         ৪. Thumb-up Rules:
+            - টুইটার বা এসএমএস পোর্টালের মতো ক্যারেক্টার লিমিট দেখানোর জন্য এই লজিকটি আদর্শ।
+            - যখনই কোনো গাণিতিক হিসাব (Calculation) করবেন, তখন ভ্যালুগুলো সংখ্যা কি না তা নিশ্চিত হয়ে নিন।
+
+         ৫. Additional Info (Hard Limit):
+            - যদি চান ইউজার ২০ এর বেশি লিখতেই পারবে না, তবে কোডে এই কন্ডিশন যোগ করতে পারেন:
+              if(inp.value.length > 20) { inp.value = inp.value.substring(0, 20); }
+
+         ৬. Expected Output Flow:
+            - পেজ লোড হবে -> কাউন্টার "20" দেখাবে।
+            - ইউজার "Hello" লিখবে (৫ ক্যারেক্টার)।
+            - কাউন্টার আপডেট হয়ে "15" দেখাবে (20 - 5 = 15)।
+            - ইউজার যদি ২০ ক্যারেক্টারের বেশি লিখে ফেলে, তবে সংখ্যাটি মাইনাস (-) এ চলে যাবে এবং লাল হয়ে যাবে।
+      */
+    </script>
+  </body>
+</html>
