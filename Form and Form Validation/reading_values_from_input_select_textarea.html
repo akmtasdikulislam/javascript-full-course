@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reading Values from input, select, textarea</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        font-family: "Artifakt Element";
+        font-weight: 600;
+        margin: 0;
+        padding: 0;
+      }
+      html,
+      body {
+        height: 100%;
+        width: 100%;
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: #222;
+      }
+      input,
+      select,
+      textarea {
+        width: 25rem;
+        height: auto;
+        padding: 0.5rem;
+        margin-bottom: 2rem;
+      }
+      form {
+        display: flex;
+        flex-direction: column;
+      }
+      #main {
+        padding: 5rem;
+        background: #222;
+        display: flex;
+        flex-direction: column;
+        gap: 2em;
+        height: 100%;
+        align-items: center;
+        width: 100%;
+      }
+      #btn {
+        background: #1ce9b5;
+        border-radius: 0.25rem;
+        border: 0;
+        color: #1e1b18;
+        cursor: pointer;
+        font-weight: 700;
+        padding: 0.5rem 1.5rem;
+        transition: all 0.3s ease-in-out;
+      }
+      #btn:hover {
+        background: #139b79;
+      }
+      small {
+        color: crimson;
+        margin-top: -1.5rem;
+        margin-bottom: 1rem;
+      }
+      .card {
+        border: 2px solid #555;
+        border-radius: 0.5rem;
+        padding: 1.5rem;
+        max-width: 22rem;
+        color: azure;
+      }
+      .profile {
+        width: 2.5rem;
+        height: 2.5rem;
+        overflow: hidden;
+        border-radius: 50%;
+        margin-bottom: 0.5rem;
+      }
+      .profile img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .card p {
+        font-size: 0.75rem;
+        margin-top: 0.5rem;
+      }
+      .card-list {
+        width: 100%;
+        padding: 1rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(22rem, 1fr));
+        gap: 2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="main">
+      <form>
+        <input type="text" name="name" id="name" placeholder="Enter Name" />
+        <input type="email" name="email" id="email" placeholder="Enter Email" />
+        <input
+          type="password"
+          name="password"
+          id="password"
+          placeholder="Enter Password"
+        />
+        <select name="gender" id="gender">
+          <option selected disabled>Choose Your Gender</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="others">Others</option>
+        </select>
+        <textarea
+          name="bio"
+          id="bio"
+          placeholder="Tell us about you"
+        ></textarea>
+        <input type="submit" id="btn" value="Submit" />
+      </form>
+      <div class="card-list"></div>
+    </div>
+    <script>
+      /* 
+         ১. এলিমেন্ট সিলেকশন (Element Selection):
+         DOM থেকে প্রয়োজনীয় ফর্ম এবং ইনপুট এলিমেন্টগুলোকে ভেরিয়েবলে স্টোর করা হচ্ছে। 
+         এটি করার ফলে বারবার document.querySelector কল করতে হয় না, যা পারফরম্যান্স উন্নত করে।
+      */
+      let form = document.querySelector("form");
+
+      let input_name = document.querySelector("#name"); // ইউজারের নাম ইনপুট
+      let input_email = document.querySelector("#email"); // ইমেইল ইনপুট
+      let input_password = document.querySelector("#password"); // পাসওয়ার্ড ইনপুট
+      let input_gender = document.querySelector("#gender"); // ড্রপডাউন থেকে জেন্ডার সিলেকশন
+      let input_bio = document.querySelector("#bio"); // টেক্সট এরিয়া থেকে বায়ো
+
+      let cardList = document.querySelector(".card-list"); // যেখানে কার্ডগুলো ডিসপ্লে হবে
+
+      /* 
+         ২. 'submit' ইভেন্ট লিসেনার:
+         ফর্মে যখন সাবমিট বাটনে ক্লিক করা হয়, তখন এই ইভেন্টটি ট্রিগার হয়। 
+         বাটনে 'click' ইভেন্ট দেওয়ার চেয়ে ফর্মে 'submit' দেওয়া ভালো কারণ এটি এন্টার (Enter) কি চাপলেও কাজ করে।
+      */
+      form.addEventListener("submit", (e) => {
+        /* 
+           ৩. preventDefault():
+           ব্রাউজারের ডিফল্ট স্বভাব হলো ফর্ম সাবমিট হলে পেজ রিফ্রেশ করা। 
+           এটি বন্ধ করার জন্য e.preventDefault() ব্যবহার করা হয়েছে যাতে ডাটা না হারিয়ে আমরা কার্ড তৈরি করতে পারি।
+        */
+        e.preventDefault(); // Output: পেজ রিফ্রেশ হওয়া বন্ধ হবে
+
+        /* 
+           ৪. ভ্যালু রিডিং (Reading Values):
+           সিলেক্ট বক্স থেকে বর্তমানে সিলেক্ট করা অপশনের ভ্যালু নেওয়া হচ্ছে।
+        */
+        let gender = input_gender.selectedOptions[0].value; // Output: "male", "female" অথবা "others"
+
+        /* ৫. ডাইনামিক এলিমেন্ট তৈরি (DOM Manipulation): */
+        let card = document.createElement("div");
+        card.classList.add("card"); // CSS স্টাইল দেওয়ার জন্য ক্লাস যোগ করা হলো
+
+        let profile = document.createElement("div");
+        profile.classList.add("profile");
+
+        let img = document.createElement("img");
+
+        /* 
+           ৬. API কল (Fetch API):
+           সিলেক্ট করা জেন্ডারের ওপর ভিত্তি করে randomuser.me থেকে একটি প্রোফাইল পিকচার আনা হচ্ছে।
+        */
+        fetch(`https://randomuser.me/api/?gender=${gender}&inc=picture`)
+          .then((response) => response.json())
+          .then((result) => {
+            img.setAttribute("src", result.results[0].picture.large); // Output: ইমেজের সোর্স সেট হবে
+          })
+          .catch((error) => console.error(error));
+
+        let h3 = document.createElement("h3");
+        h3.textContent = input_name.value; // Output: ইনপুট থেকে নাম সেট হবে
+
+        let h5 = document.createElement("h5");
+        h5.textContent = input_email.value; // Output: ইমেইল সেট হবে
+
+        let p = document.createElement("p");
+        p.textContent = input_bio.value; // Output: বায়ো টেক্সট সেট হবে
+
+        /* 
+           ৭. অ্যাপেন্ডিং (Appending):
+           তৈরি করা এলিমেন্টগুলোকে ক্রমানুসারে একটির ভেতর আরেকটি সাজানো হচ্ছে।
+        */
+        profile.appendChild(img);
+
+        card.appendChild(profile);
+        card.appendChild(h3);
+        card.appendChild(h5);
+        card.appendChild(p);
+
+        cardList.appendChild(card); // Output: স্ক্রিনে নতুন একটি প্রোফাইল কার্ড যুক্ত হবে
+      });
+
+      /* 
+         ---------------------------------------------------------
+         Study Notes & Best Practices:
+         ---------------------------------------------------------
+         
+         ১. কেন textContent ব্যবহার করা হয়েছে?
+            - innerHTML এর চেয়ে textContent বেশি নিরাপদ কারণ এটি স্ক্রিপ্ট ইনজেকশন (XSS attack) রোধ করে।
+
+         ২. Common Mistakes (সাধারণ ভুল):
+            - input_name.value এর বদলে শুধু input_name লেখা। মনে রাখতে হবে input_name হলো পুরো HTML এলিমেন্ট, আর .value হলো তার ভেতরের লেখা।
+            - fetch() একটি asynchronous অপারেশন, তাই ইমেজ লোড হতে সামান্য সময় নিতে পারে।
+
+         ৩. Best Practices (সেরা নিয়ম):
+            - ফর্ম সাবমিট হওয়ার পর input_name.value = "" করে ফিল্ডগুলো খালি করে দেওয়া উচিত (UX এর জন্য)।
+            - পাসওয়ার্ড ফিল্ডের ভ্যালু সাধারণত কার্ডে দেখানো উচিত নয় (সিকিউরিটি রিস্ক)।
+
+         ৪. Thumb-up Rules:
+            - যখনই ইউজার থেকে ইনপুট নেবেন, .trim() ব্যবহার করে অপ্রয়োজনীয় স্পেস বাদ দিয়ে দিন।
+            - বড় ফর্মের ক্ষেত্রে FormData API ব্যবহার করা বেশি প্রফেশনাল।
+
+         ৫. Expected Output Flow:
+            - ইউজার তথ্য পূরণ করে Submit চাপবে।
+            - API থেকে ছবি আসবে এবং ইউজারের দেওয়া নাম, ইমেইল ও বায়ো দিয়ে একটি সুন্দর কার্ড তৈরি হবে।
+      */
+    </script>
+  </body>
+</html>
