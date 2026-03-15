@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Demonstration of 'submit' Event</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        font-family: "Artifakt Element";
+        font-weight: 600;
+        margin: 0;
+        padding: 0;
+      }
+      html,
+      body {
+        height: 100%;
+        width: 100%;
+      }
+      #main {
+        padding: 5rem;
+        background: #222;
+        display: flex;
+        flex-direction: column;
+        gap: 2em;
+        height: 100%;
+        align-items: center;
+        width: 100%;
+      }
+      #btn {
+        background: #1ce9b5;
+        border-radius: 0.25rem;
+        border: 0;
+        color: #1e1b18;
+        cursor: pointer;
+        font-weight: 700;
+        padding: 0.5rem 1.5rem;
+        transition: all 0.3s ease-in-out;
+      }
+      #btn:hover {
+        background: #139b79;
+      }
+      input {
+        display: block;
+        padding: 0.25rem;
+        width: 20rem;
+      }
+      input:focus {
+        outline-color: #139b79;
+      }
+      input:not(:last-child) {
+        margin-bottom: 0.5rem;
+      }
+      .card {
+        border: 2px solid #555;
+        border-radius: 0.5rem;
+        padding: 1.5rem;
+        max-width: 22rem;
+        color: azure;
+      }
+      .profile {
+        width: 2.5rem;
+        height: 2.5rem;
+        overflow: hidden;
+        border-radius: 50%;
+        margin-bottom: 0.5rem;
+      }
+      .profile img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .card p {
+        font-size: 0.75rem;
+        margin-top: 0.5rem;
+      }
+      .card-list {
+        width: 100%;
+        padding: 1rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(22rem, 1fr));
+        gap: 2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="main">
+      <form action="">
+        <input type="text" placeholder="Enter URL of your profile pic" />
+        <input type="text " placeholder="Enter your name" />
+        <input type="text" placeholder="Enter your job role" />
+        <input type="text" placeholder="Enter your info" />
+        <input id="btn" type="submit" value="Submit" />
+      </form>
+
+      <div class="card-list"></div>
+    </div>
+    <script>
+      /* 
+         ১. এলিমেন্ট সিলেকশন:
+         document.querySelector দিয়ে <form> এবং querySelectorAll দিয়ে সব <input> সিলেক্ট করা হয়েছে।
+         querySelectorAll একটি NodeList দেয়, যা অনেকটা অ্যারের মতো কাজ করে।
+      */
+      let form = document.querySelector("form"); // ফর্মটি সিলেক্ট করা হলো
+      let inputs = document.querySelectorAll("input"); // সব ইনপুট ফিল্ডের লিস্ট নেওয়া হলো
+
+      /* 
+         ২. 'submit' ইভেন্ট লিসেনার:
+         যখন ইউজার সাবমিট বাটনে ক্লিক করবে বা এন্টার চাপবে, তখন এই ইভেন্টটি ট্রিগার হবে।
+      */
+      form.addEventListener("submit", (event) => {
+        /* 
+           ৩. preventDefault() এর ব্যবহার:
+           ব্রাউজারের ডিফল্ট স্বভাব হলো ফর্ম সাবমিট হলে পেজ রিফ্রেশ করা। 
+           এটি বন্ধ করার জন্য event.preventDefault() ব্যবহার করা হয়েছে যাতে ডাটা না হারিয়ে আমরা কার্ড তৈরি করতে পারি।
+        */
+        event.preventDefault(); // Output: পেজ রিফ্রেশ হওয়া বন্ধ হবে
+
+        /* ৪. নতুন কার্ড তৈরির লজিক: */
+        let cardList = document.querySelector(".card-list"); // যেখানে কার্ডগুলো জমা হবে
+
+        /* createElement ব্যবহার করে নতুন HTML এলিমেন্ট তৈরি করা হচ্ছে */
+        let card = document.createElement("div"); // একটি নতুন <div> তৈরি
+        card.classList.add("card"); // CSS স্টাইল পাওয়ার জন্য 'card' ক্লাস যোগ করা হলো
+
+        let profile = document.createElement("div"); // প্রোফাইল ইমেজের কন্টেইনার
+        profile.classList.add("profile");
+
+        let img = document.createElement("img");
+        /* inputs[0] হলো প্রথম ইনপুট (Image URL)। তার value নিয়ে src হিসেবে সেট করা হচ্ছে। */
+        img.setAttribute("src", inputs[0].value); // Output: ইমেজের সোর্স সেট হবে
+
+        let h3 = document.createElement("h3");
+        h3.textContent = inputs[1].value; // ইউজারের নাম সেট করা হলো
+
+        let h5 = document.createElement("h5");
+        h5.textContent = inputs[2].value; // জব রোল সেট করা হলো
+
+        let p = document.createElement("p");
+        p.textContent = inputs[3].value; // ডেসক্রিপশন সেট করা হলো
+
+        /* 
+           ৫. অ্যাপেন্ডিং (Appending):
+           তৈরি করা এলিমেন্টগুলোকে একটির ভেতর আরেকটি সাজানো হচ্ছে।
+        */
+        profile.appendChild(img); // প্রোফাইল ডিভের ভেতর ইমেজ ঢোকানো হলো
+
+        card.appendChild(profile); // কার্ডের ভেতর প্রোফাইল ডিভ দেওয়া হলো
+        card.appendChild(h3);
+        card.appendChild(h5);
+        card.appendChild(p);
+
+        /* সবশেষে মূল লিস্টে নতুন কার্ডটি যোগ করা হলো */
+        cardList.appendChild(card); // Output: স্ক্রিনে নতুন একটি কার্ড দেখা যাবে
+
+        /* 
+           ৬. ইনপুট ফিল্ড ক্লিয়ার করা:
+           সাবমিট হওয়ার পর ইনপুট বক্সগুলো খালি করে দেওয়া হচ্ছে যাতে ইউজার নতুন ডাটা দিতে পারে।
+        */
+        inputs.forEach((inp) => {
+          if (inp.type !== "submit") {
+            inp.value = ""; // Output: ইনপুট বক্স খালি হয়ে যাবে
+          }
+        });
+      });
+
+      /* 
+         ---------------------------------------------------------
+         গুরুত্বপূর্ণ তথ্য ও Study Notes (Form Events):
+         ---------------------------------------------------------
+         
+         ১. কেন 'submit' ইভেন্ট বাটনের বদলে ফর্মে দেওয়া হয়?
+            - যদি আপনি শুধু বাটনে 'click' ইভেন্ট দেন, তবে কিবোর্ডের 'Enter' চাপলে ফর্ম সাবমিট হবে না। 
+            - ফর্মে 'submit' ইভেন্ট দিলে মাউস ক্লিক এবং এন্টার কি—উভয় ক্ষেত্রেই কাজ করে।
+
+         ২. event.preventDefault() কেন জরুরি?
+            - এটি ছাড়া জাভাস্ক্রিপ্ট কোড রান হওয়ার আগেই ব্রাউজার পেজ রিলোড করে ফেলবে, 
+              ফলে আপনার তৈরি করা ডাইনামিক কার্ডটি হারিয়ে যাবে।
+
+         ৩. Common Mistakes (সাধারণ ভুল):
+            - inputs[0].value এর বদলে শুধু inputs[0] লেখা। মনে রাখতে হবে এলিমেন্ট আর এলিমেন্টের ভ্যালু এক নয়।
+            - createElement করার পর appendChild করতে ভুলে যাওয়া। অ্যাপেন্ড না করলে এলিমেন্ট মেমোরিতে থাকে কিন্তু স্ক্রিনে দেখা যায় না।
+
+         ৪. Best Practices (সেরা নিয়ম):
+            - ইউজার যদি কোনো ইনপুট খালি রাখে, তবে কার্ড তৈরি করার আগে ভ্যালিডেশন (if condition) করা উচিত।
+            - অনেক বড় ফর্মের ক্ষেত্রে inputs[0], inputs[1] এভাবে না লিখে FormData API ব্যবহার করা বেশি প্রফেশনাল।
+
+         ৫. Thumb-up Rules:
+            - যখনই DOM-এ নতুন এলিমেন্ট যোগ করবেন, তখন createElement এবং appendChild/append ব্যবহার করুন।
+            - ফর্ম সাবমিশনের পর ইউজার এক্সপেরিয়েন্স ভালো করতে সবসময় ইনপুট ফিল্ডগুলো রিসেট করে দিন।
+
+         ৬. Expected Output Flow:
+            - ইউজার ৪টি বক্সে তথ্য পূরণ করবে।
+            - "Submit" বাটনে ক্লিক করবে।
+            - পেজ রিফ্রেশ না হয়ে নিচে একটি সুন্দর প্রোফাইল কার্ড তৈরি হবে।
+            - ইনপুট বক্সগুলো আবার খালি হয়ে যাবে।
+      */
+    </script>
+  </body>
+</html>
