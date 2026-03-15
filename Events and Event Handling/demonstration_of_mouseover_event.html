@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Demonstration of 'mouseover' Event</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        font-family: "Artifakt Element";
+        font-weight: 600;
+        margin: 0;
+        padding: 0;
+      }
+      html,
+      body {
+        height: 100%;
+        width: 100%;
+      }
+      #abc {
+        width: 20rem;
+        height: 20rem;
+        background-color: crimson;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="abc"></div>
+    <script>
+      /* 
+         ১. এলিমেন্ট সিলেকশন:
+         document.querySelector ব্যবহার করে ID (#abc) এর মাধ্যমে নির্দিষ্ট <div> টিকে সিলেক্ট করা হয়েছে।
+         এটি একটি ভেরিয়েবলে (abc) রাখা হয়েছে যাতে পরবর্তীতে এর ওপর ইভেন্ট এবং স্টাইল অ্যাপ্লাই করা যায়।
+      */
+      let abc = document.querySelector("#abc");
+
+      /* 
+         ২. 'mouseover' ইভেন্ট লিসেনার:
+         যখন মাউস কার্সারটি এলিমেন্টের সীমানার ভেতরে প্রবেশ করবে, তখন এই ইভেন্টটি ট্রিগার হবে।
+         এখানে একটি Arrow Function ব্যবহার করা হয়েছে যা ব্যাকগ্রাউন্ড কালার পরিবর্তন করবে।
+      */
+      abc.addEventListener("mouseover", () => {
+        abc.style.backgroundColor = "green"; // Output: বক্সের রঙ লাল থেকে সবুজ হয়ে যাবে
+      });
+
+      /* 
+         ৩. 'mouseout' ইভেন্ট লিসেনার:
+         যখন মাউস কার্সারটি এলিমেন্টের সীমানা থেকে বাইরে চলে যাবে, তখন এই ইভেন্টটি ট্রিগার হবে।
+         এর মাধ্যমে আমরা এলিমেন্টটিকে তার আগের অবস্থায় (Original State) ফিরিয়ে আনি।
+      */
+      abc.addEventListener("mouseout", () => {
+        abc.style.backgroundColor = "crimson"; // Output: বক্সের রঙ আবার লাল হয়ে যাবে
+      });
+
+      /* 
+         ---------------------------------------------------------
+         গুরুত্বপূর্ণ তথ্য ও Study Notes (Mouse Events):
+         ---------------------------------------------------------
+         
+         ১. mouseover বনাম mouseenter:
+            - mouseover: এটি 'Event Bubbling' সাপোর্ট করে। অর্থাৎ চাইল্ড এলিমেন্টের ওপর মাউস নিলেও প্যারেন্ট এলিমেন্টে ইভেন্টটি ট্রিগার হয়।
+            - mouseenter: এটি বাবলিং করে না। শুধুমাত্র নির্দিষ্ট এলিমেন্টের ভেতরে ঢুকলেই কাজ করে। জটিল লেআউটে এটি বেশি নিরাপদ।
+
+         ২. mouseout বনাম mouseleave:
+            - mouseout: চাইল্ড এলিমেন্টে মাউস সরালেও এটি ট্রিগার হতে পারে।
+            - mouseleave: শুধুমাত্র মূল এলিমেন্ট থেকে পুরোপুরি বের হয়ে গেলেই কাজ করে।
+
+         ৩. Common Mistakes (সাধারণ ভুল):
+            - শুধু mouseover ব্যবহার করা কিন্তু mouseout দিতে ভুলে যাওয়া। এতে এলিমেন্টটি একবার পরিবর্তন হওয়ার পর আর আগের অবস্থায় ফিরে আসে না।
+            - CSS Hover বনাম JS Mouseover: যদি শুধু স্টাইল পরিবর্তনই লক্ষ্য হয়, তবে জাভাস্ক্রিপ্টের বদলে CSS-এর ':hover' সিলেক্টর ব্যবহার করা পারফরম্যান্সের জন্য ভালো।
+
+         ৪. Best Practices (সেরা নিয়ম):
+            - যদি অনেকগুলো এলিমেন্টে একই হোভার ইফেক্ট দিতে হয়, তবে আলাদা আলাদা লিসেনার না দিয়ে 'Event Delegation' ব্যবহার করা উচিত।
+            - জাভাস্ক্রিপ্টে সরাসরি স্টাইল (abc.style) পরিবর্তন না করে একটি CSS ক্লাস (abc.classList.add('active')) টগল করা বেশি প্রফেশনাল।
+
+         ৫. Thumb-up Rules:
+            - ইন্টারঅ্যাক্টিভ মেনু, টুলটিপ (Tooltip) বা ইমেজ গ্যালারিতে হোভার ইফেক্ট তৈরির জন্য এই ইভেন্টগুলো অপরিহার্য।
+            - মোবাইল ডিভাইসে 'mouseover' কাজ করে না (কারণ সেখানে কার্সার নেই), তাই টাচ ডিভাইসের জন্য 'touchstart' বা 'click' ইভেন্টের কথা মাথায় রাখা উচিত।
+
+         ৬. Expected Output Flow:
+            - পেজ লোড হবে -> একটি বড় লাল (crimson) রঙের বক্স দেখা যাবে।
+            - ইউজার মাউস বক্সের ওপর আনবে -> বক্সটি সাথে সাথে সবুজ (green) হয়ে যাবে।
+            - ইউজার মাউস সরিয়ে নেবে -> বক্সটি আবার লাল হয়ে যাবে।
+      */
+    </script>
+  </body>
+</html>
