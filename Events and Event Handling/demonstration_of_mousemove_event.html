@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Demonstration of 'mousemove' Event</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        font-family: "Artifakt Element";
+        font-weight: 600;
+        margin: 0;
+        padding: 0;
+      }
+      html,
+      body {
+        height: 100%;
+        width: 100%;
+      }
+      body {
+        overflow: hidden;
+      }
+      #abc {
+        position: absolute;
+        transition: all cubic-bezier(0.19, 1, 0.22, 1) 1s;
+        width: 20rem;
+        height: 20rem;
+        background-color: crimson;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="abc"></div>
+    <script>
+      /* 
+         ১. এলিমেন্ট সিলেকশন:
+         document.querySelector ব্যবহার করে ID (#abc) এর মাধ্যমে লাল বক্সটিকে সিলেক্ট করা হয়েছে।
+         এই এলিমেন্টটিকে আমরা মাউসের মুভমেন্ট অনুযায়ী স্ক্রিনে নাড়াচাড়া করাবো।
+      */
+      let abc = document.querySelector("#abc"); // Output: <div> এলিমেন্টটি সিলেক্ট হবে
+
+      /* 
+         ২. 'mousemove' ইভেন্ট লিসেনার:
+         'window' অবজেক্টে ইভেন্টটি যোগ করা হয়েছে যাতে পুরো স্ক্রিনের যেকোনো জায়গায় মাউস নাড়ালে এটি কাজ করে।
+         'mousemove' ইভেন্টটি প্রতিবার মাউস এক পিক্সেল সরলেও ট্রিগার হয়, যা রিয়েল-টাইম ট্র্যাকিং নিশ্চিত করে।
+         'event' (বা e) অবজেক্টটি মাউসের বর্তমান স্থানাঙ্ক (Coordinates) বহন করে।
+      */
+      window.addEventListener("mousemove", (event) => {
+        /* 
+           ৩. স্থানাঙ্ক নির্ধারণ (Coordinates):
+           event.clientX: এটি উইন্ডোর বাম দিক থেকে মাউসের দূরত্ব (Horizontal position) দেয়।
+           event.clientY: এটি উইন্ডোর উপর থেকে মাউসের দূরত্ব (Vertical position) দেয়।
+           
+           বক্সটির style.top এবং style.left প্রপার্টিতে এই ভ্যালুগুলো 'px' ইউনিটে সেট করা হচ্ছে।
+           যেহেতু CSS-এ position: absolute দেওয়া আছে, তাই বক্সটি মাউসের সাথে সাথে পজিশন পরিবর্তন করবে।
+        */
+        abc.style.top = event.clientY + "px"; // Output: বক্সটি লম্বালম্বিভাবে মাউসের পজিশনে যাবে
+        abc.style.left = event.clientX + "px"; // Output: বক্সটি আড়াআড়িভাবে মাউসের পজিশনে যাবে
+      });
+
+      /* 
+         ---------------------------------------------------------
+         গুরুত্বপূর্ণ তথ্য ও Study Notes (Mousemove Events):
+         ---------------------------------------------------------
+         
+         ১. clientX/Y বনাম pageX/Y বনাম screenX/Y:
+            - clientX/Y: বর্তমান দৃশ্যমান উইন্ডো (Viewport) অনুযায়ী পজিশন দেয়।
+            - pageX/Y: পুরো ডকুমেন্টের শুরু থেকে পজিশন দেয় (যদি পেজ স্ক্রল করা থাকে তবে এটি আলাদা হবে)।
+            - screenX/Y: ইউজারের পুরো মনিটরের স্ক্রিন অনুযায়ী পজিশন দেয়।
+
+         ২. Performance (পারফরম্যান্স সতর্কতা):
+            - 'mousemove' ইভেন্ট প্রতি সেকেন্ডে শত শত বার ট্রিগার হতে পারে। 
+            - যদি এই ইভেন্টের ভেতরে খুব ভারী কোনো ক্যালকুলেশন থাকে, তবে পেজ ল্যাগ করতে পারে। 
+            - প্রফেশনাল ক্ষেত্রে 'Throttling' বা 'Debouncing' অথবা 'requestAnimationFrame' ব্যবহার করা উচিত।
+
+         ৩. Common Mistakes (সাধারণ ভুল):
+            - পজিশন সেট করার সময় শেষে "px" যোগ করতে ভুলে যাওয়া। (যেমন: abc.style.top = event.clientY; -> এটি কাজ করবে না)।
+            - CSS-এ position: absolute বা fixed না দেওয়া। পজিশন ডিফাইন না করলে top/left কাজ করে না।
+
+         ৪. Best Practices (সেরা নিয়ম):
+            - স্মুথ অ্যানিমেশনের জন্য CSS-এ 'transition' ব্যবহার করা হয়েছে (যেমনটি এই ফাইলের স্টাইল ট্যাগে আছে)। 
+            - মাউস ট্র্যাকিং এর সময় এলিমেন্টটি যাতে মাউসের ঠিক মাঝখানে থাকে, তার জন্য এলিমেন্টের অর্ধেক উইডথ/হাইট বিয়োগ করে পজিশন সেট করা ভালো।
+
+         ৫. Thumb-up Rules:
+            - কাস্টম মাউস কার্সার (Custom Cursor), প্যারালাক্স ইফেক্ট (Parallax Effect) বা ড্র্যাগ-অ্যান্ড-ড্রপ ফিচার তৈরির জন্য 'mousemove' অপরিহার্য।
+            - মোবাইল বা টাচ ডিভাইসে 'mousemove' কাজ করে না, সেখানে 'touchmove' ইভেন্ট ব্যবহার করতে হয়।
+
+         ৬. Expected Output Flow:
+            - পেজ লোড হবে -> একটি লাল বক্স দেখা যাবে।
+            - ইউজার মাউস নাড়াচাড়া করবে।
+            - বক্সটি একটি স্মুথ ট্রানজিশন নিয়ে মাউসের কার্সারকে অনুসরণ করবে।
+            - মাউস যেখানে থামবে, বক্সটিও সেখানে গিয়ে স্থির হবে।
+      */
+    </script>
+  </body>
+</html>
