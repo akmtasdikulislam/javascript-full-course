@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Download Progress Bar</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Artifakt Element";
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+      }
+
+      #main {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        background: #222;
+      }
+
+      h3,
+      p {
+        color: #888;
+        font-weight: bold;
+      }
+      #download-box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 22rem;
+        padding: 1rem 2.5rem;
+        height: 12rem;
+        background: #333;
+        border-radius: 0.5rem;
+        gap: 1rem;
+        box-shadow: 1px 2px 20px #000;
+      }
+      #progress-bar-container {
+        width: 100%;
+        height: 1rem;
+        border-radius: 10rem;
+        background: #222;
+        overflow: hidden;
+      }
+      #progress-bar {
+        height: 1rem;
+        background: white;
+        width: 0%;
+        /* transition: all ease-in-out 0.3s; */
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="main">
+      <div id="download-box">
+        <h3>Downloading...</h3>
+        <div id="progress-bar-container">
+          <div id="progress-bar"></div>
+        </div>
+        <p><span id="progress">0</span>%</p>
+      </div>
+    </div>
+    <script>
+      /* 
+         ১. ভেরিয়েবল ডিক্লেয়ারেশন:
+         count: প্রগ্রেস পারসেন্টেজ ট্র্যাক করার জন্য।
+         seconds: মোট কত সেকেন্ডে ডাউনলোড শেষ হবে তা নির্ধারণ করার জন্য।
+      */
+      let count = 0; 
+      let seconds = 3; 
+
+      /* 
+         ২. DOM এলিমেন্ট সিলেকশন:
+         প্রগ্রেস বার এবং পারসেন্টেজ টেক্সট আপডেট করার জন্য এলিমেন্টগুলো সিলেক্ট করা হয়েছে।
+      */
+      let progress = document.querySelector("#progress");
+      let progressBar = document.querySelector("#progress-bar");
+
+      /* 
+         ৩. setInterval এর মাধ্যমে অ্যানিমেশন লজিক:
+         setInterval ব্যবহার করা হয়েছে যাতে নির্দিষ্ট সময় পর পর প্রগ্রেস বার আপডেট হয়।
+      */
+      let intervalId = setInterval(
+        () => {
+          /* 
+             চেক করা হচ্ছে কাউন্ট ১০০ এর নিচে কি না। 
+             ১০০ হয়ে গেলে ডাউনলোড সম্পন্ন হবে।
+          */
+          if (count <= 99) {
+            count++; // প্রতি স্টেপে ১ করে বাড়ছে
+            
+            /* CSS Width পরিবর্তন করে বারটি বাড়ানো হচ্ছে */
+            progressBar.style.width = `${count}%`; // Output: 1%, 2%, ... 100%
+            
+            /* টেক্সট কন্টেন্ট আপডেট করা হচ্ছে */
+            progress.textContent = count; // Output: 1, 2, ... 100
+          } else {
+            /* 
+               Best Practice: কাজ শেষ হয়ে গেলে ইন্টারভাল ক্লিয়ার করা জরুরি।
+               নতুবা এটি মেমোরিতে চলতেই থাকবে (Memory Leak)।
+            */
+            clearInterval(intervalId);
+            document.querySelector("h3").textContent = "Download Complete!"; // Output: Download Complete!
+          }
+        },
+        /* 
+           ক্যালকুলেশন: (seconds * 1000) / 100
+           ৩ সেকেন্ডকে ১০০ ভাগে ভাগ করা হয়েছে যাতে ১০০% পূর্ণ হতে ঠিক ৩ সেকেন্ড লাগে।
+           এখানে ৩০ms পর পর ফাংশনটি রান হবে।
+        */
+        (seconds * 1000) / 100,
+      );
+
+      /* 
+         ---------------------------------------------------------
+         Study Notes & Best Practices (Bangla):
+         ---------------------------------------------------------
+         
+         ১. কেন setInterval?
+            - স্মুথ অ্যানিমেশনের জন্য ছোট ছোট ইন্টারভালে ভ্যালু আপডেট করতে হয়। 
+              এখানে ৩ সেকেন্ডে ১০০ বার আপডেট হচ্ছে।
+
+         ২. Common Mistakes (সাধারণ ভুল):
+            - clearInterval না করা: টাইমার ১০০ হওয়ার পরও ব্যাকগ্রাউন্ডে চেক করতে থাকে।
+            - হার্ডকোডেড ভ্যালু: (seconds * 1000) / 100 না লিখে সরাসরি ৩০ লিখলে 
+              পরবর্তীতে সময় পরিবর্তন করা কঠিন হয়ে পড়ে।
+
+         ৩. Thumb-up Rules:
+            - সবসময় টাইমার আইডি (intervalId) একটি ভেরিয়েবলে রাখুন।
+            - UI আপডেট করার সময় Template Literals (`${count}%`) ব্যবহার করা ক্লিন কোডিং।
+
+         ৪. Pro Tip:
+            - যদি আরও স্মুথ অ্যানিমেশন চান, তবে CSS-এ `transition: width 0.1s linear;` 
+              ব্যবহার করতে পারেন। তবে খুব নিখুঁত অ্যানিমেশনের জন্য 
+              `requestAnimationFrame` ব্যবহার করা সবচেয়ে ভালো।
+         
+         ---------------------------------------------------------
+      */
+    </script>
+  </body>
+</html>
