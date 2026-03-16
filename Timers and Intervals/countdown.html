@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Countdown</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Artifakt Element";
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+      }
+
+      #main {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        background: #222;
+      }
+
+      h1 {
+        font-size: 20rem;
+        color: #555;
+        font-weight: bold;
+      }
+
+      input {
+        display: block;
+        padding: 0.5rem;
+        border: 0;
+        border-radius: 0.25rem 0 0 0.25rem;
+        width: 12.5rem;
+        font-size: 18px;
+      }
+
+      input:focus {
+        outline: 0;
+      }
+
+      .btn {
+        background: #14c89b;
+        border-radius: 0.25rem;
+        border: 0;
+        color: hsl(30, 11%, 95%);
+        cursor: pointer;
+        font-weight: 700;
+        padding: 0.5rem 1.5rem;
+        transition: all 0.3s ease-in-out;
+        width: auto;
+        font-size: 18px;
+      }
+
+      .btn:hover {
+        background: #139b79;
+      }
+      #start-btn {
+        border-radius: 0 0.25rem 0.25rem 0;
+      }
+      #stop-btn {
+        background: #c81441;
+      }
+
+      #input-area,
+      #count-area {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      #count-area {
+        flex-direction: column;
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="main">
+      <div id="input-area">
+        <input type="number" placeholder="Enter number in sec" />
+        <input type="submit" value="Start" class="btn" id="start-btn" />
+      </div>
+
+      <div id="count-area">
+        <h1>0</h1>
+        <button class="btn" id="stop-btn">Stop</button>
+      </div>
+    </div>
+    <script>
+      /* 
+         ১. এলিমেন্ট সিলেকশন (Element Selection):
+         DOM থেকে প্রয়োজনীয় HTML এলিমেন্টগুলোকে ভেরিয়েবলে স্টোর করা হচ্ছে। 
+         যাতে পরবর্তীতে বারবার কুয়েরি করতে না হয় এবং কোড ক্লিন থাকে।
+      */
+      let h1 = document.querySelector("h1");
+      let startBtn = document.querySelector("#start-btn");
+      let stopBtn = document.querySelector("#stop-btn");
+      let input = document.querySelector("input[type='number']");
+      let countArea = document.querySelector("#count-area");
+      let inputArea = document.querySelector("#input-area");
+
+      /* 
+         ২. গ্লোবাল টাইমার ভেরিয়েবল:
+         setInterval এর ID রাখার জন্য এই ভেরিয়েবলটি ডিক্লেয়ার করা হয়েছে। 
+         এটি বাইরে রাখার কারণ হলো যাতে 'Start' এবং 'Stop' উভয় ফাংশন থেকেই এটি অ্যাক্সেস করা যায়।
+      */
+      let timer;
+
+      /* 
+         ৩. কাউন্টডাউন শুরু করার লজিক:
+         ইউজার যখন 'Start' বাটনে ক্লিক করবে, তখন ইনপুট থেকে ভ্যালু নিয়ে টাইমার শুরু হবে।
+      */
+      startBtn.addEventListener("click", () => {
+        /* ইনপুট বক্স থেকে ইউজারের দেওয়া সেকেন্ডের মান নেওয়া হচ্ছে */
+        let count = input.value;
+
+        /* যদি ইনপুট খালি থাকে তবে টাইমার শুরু না করা ভালো (Validation) */
+        if (count === "" || count <= 0) return;
+
+        /* স্ক্রিনে প্রাথমিক সংখ্যাটি দেখানো হচ্ছে */
+        h1.textContent = count; // Output: ইনপুটে দেওয়া সংখ্যাটি স্ক্রিনে আসবে
+
+        /* ইনপুট ফিল্ড খালি করে দেওয়া হচ্ছে এবং UI পরিবর্তন করা হচ্ছে */
+        input.value = "";
+        inputArea.style.display = "none"; // ইনপুট সেকশন হাইড হবে
+        countArea.style.display = "flex"; // কাউন্টার সেকশন শো হবে
+
+        /* 
+           setInterval(callback, 1000): 
+           প্রতি ১ সেকেন্ড (১০০০ms) পর পর কাউন্ট ১ করে কমাবে।
+        */
+        timer = setInterval(() => {
+          if (count > 0) {
+            count--; // ১ সেকেন্ড করে কমানো হচ্ছে
+            h1.textContent = count; // Output: প্রতি সেকেন্ডে সংখ্যা কমতে থাকবে
+          } else {
+            /* সময় শেষ হয়ে গেলে ইন্টারভাল বন্ধ করা এবং মেসেজ দেখানো */
+            clearInterval(timer);
+            h1.textContent = "Ended!!"; // Output: Ended!!
+            stopBtn.textContent = "Reset"; // স্টপ বাটনটি রিসেট বাটনে পরিণত হবে
+            clearInterval(timer);
+          }
+        }, 1000);
+      });
+
+      /* 
+         ৪. কাউন্টডাউন থামানো বা রিসেট করার লজিক:
+         ইউজার মাঝপথে থামাতে চাইলে বা শেষ হওয়ার পর রিসেট করতে চাইলে এটি কাজ করবে।
+      */
+      stopBtn.addEventListener("click", () => {
+        /* চলমান টাইমারটি বন্ধ করা হচ্ছে */
+        clearInterval(timer);
+
+        /* UI-কে আগের অবস্থায় ফিরিয়ে নেওয়া হচ্ছে */
+        inputArea.style.display = "flex"; // ইনপুট বক্স আবার আসবে
+        countArea.style.display = "none"; // কাউন্টার হাইড হবে
+        stopBtn.textContent = "Stop"; // বাটনের লেখা আবার 'Stop' করা হলো
+      });
+
+      /* 
+         ---------------------------------------------------------
+         গুরুত্বপূর্ণ তথ্য ও Study Notes (Countdown Logic):
+         ---------------------------------------------------------
+         
+         ১. কেন setInterval ব্যবহার করা হয়েছে?
+            - যেহেতু আমাদের প্রতি ১ সেকেন্ড পর পর একই কাজ (সংখ্যা কমানো) করতে হবে, 
+              তাই setInterval এখানে সবচেয়ে উপযুক্ত।
+
+         ২. Common Mistakes (সাধারণ ভুল):
+            - clearInterval(timer) করতে ভুলে যাওয়া। এটি না করলে টাইমার ব্যাকগ্রাউন্ডে 
+              চলতেই থাকবে এবং মেমোরি লিক (Memory Leak) হবে।
+            - ইনপুট ভ্যালিডেশন না করা। ইউজার টেক্সট বা নেগেটিভ নাম্বার দিলে কোড এরর দিতে পারে।
+
+         ৩. Best Practices (সেরা নিয়ম):
+            - নতুন টাইমার শুরু করার আগে সবসময় আগের টাইমারটি ক্লিয়ার করে নেওয়া ভালো। 
+              যাতে একাধিক ইন্টারভাল একসাথে রান হয়ে কাউন্টিং এলোমেলো না করে।
+            - UI পরিবর্তনের জন্য CSS ক্লাস টগল (classList.toggle) ব্যবহার করা সরাসরি 
+              style.display পরিবর্তনের চেয়ে বেশি ক্লিন।
+
+         ৪. Thumb-up Rules:
+            - টাইমার আইডি (timer variable) সবসময় ফাংশনের বাইরে রাখুন যাতে যেকোনো 
+              জায়গা থেকে সেটি থামানো যায়।
+            - ইউজার এক্সপেরিয়েন্সের জন্য টাইমার শেষ হলে একটি সাউন্ড বা ভিজ্যুয়াল এলার্ট দেওয়া ভালো।
+
+         ৫. Expected Output Flow:
+            - ইউজার বক্সে "5" লিখে Start চাপবে।
+            - ইনপুট বক্স হারিয়ে যাবে, বড় করে "5" দেখা যাবে।
+            - প্রতি সেকেন্ডে সংখ্যাটি 4, 3, 2, 1, 0 হবে।
+            - শেষে "Ended!!" লেখা আসবে এবং বাটনটি "Reset" হয়ে যাবে।
+            - Reset/Stop চাপলে আবার ইনপুট দেওয়ার জায়গা ফিরে আসবে।
+
+         ৬. Note on 'cout = 0':
+            - আপনার আগের কোডে 'cout = 0' ছিল যা একটি স্পেলিং মিস্টেক (count হওয়ার কথা)। 
+              তবে এখানে রিসেট লজিকের জন্য ভেরিয়েবল রিসেট করার চেয়ে ইন্টারভাল ক্লিয়ার 
+              করা এবং UI হাইড করাই যথেষ্ট।
+      */
+    </script>
+  </body>
+</html>
