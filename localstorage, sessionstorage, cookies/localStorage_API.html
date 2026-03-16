@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LocalStorage API</title>
+  </head>
+  <body>
+    <div
+      id="app"
+      style="
+        font-family: sans-serif;
+        padding: 20px;
+        line-height: 1.6;
+        max-width: 800px;
+        margin: auto;
+        background: #f4f4f9;
+        border-radius: 10px;
+      "
+    >
+      <h1 style="color: #333; border-bottom: 2px solid #333">
+        LocalStorage API Study Note
+      </h1>
+
+      <div
+        style="
+          background: #fff;
+          padding: 15px;
+          margin-bottom: 10px;
+          border-left: 5px solid #2196f3;
+        "
+      >
+        <strong>Output Console:</strong>
+        <div id="display" style="color: #d32f2f; font-weight: bold"></div>
+      </div>
+
+      <div style="display: flex; gap: 10px; flex-wrap: wrap">
+        <button onclick="saveData()" style="padding: 10px; cursor: pointer">
+          1. Save Data (setItem)
+        </button>
+        <button onclick="readData()" style="padding: 10px; cursor: pointer">
+          2. Read Data (getItem)
+        </button>
+        <button onclick="updateData()" style="padding: 10px; cursor: pointer">
+          3. Update Data
+        </button>
+        <button
+          onclick="removeSpecific()"
+          style="padding: 10px; cursor: pointer"
+        >
+          4. Remove Item (removeItem)
+        </button>
+        <button onclick="showKey()" style="padding: 10px; cursor: pointer">
+          5. Get Key by Index (key)
+        </button>
+        <button onclick="showLength()" style="padding: 10px; cursor: pointer">
+          6. Total Items (length)
+        </button>
+        <button
+          onclick="clearAll()"
+          style="
+            padding: 10px;
+            background: #ff5252;
+            color: white;
+            border: none;
+            cursor: pointer;
+          "
+        >
+          7. Clear All (clear)
+        </button>
+      </div>
+
+      <div
+        style="
+          margin-top: 20px;
+          background: #e3f2fd;
+          padding: 15px;
+          border-radius: 5px;
+        "
+      >
+        <h3>Best Practices & Notes:</h3>
+        <ul>
+          <li>
+            <b>Storage Limit:</b> সাধারণত ৫-১০ এমবি পর্যন্ত ডাটা রাখা যায়।
+          </li>
+          <li>
+            <b>Data Type:</b> শুধুমাত্র String সেভ করা যায়। Object সেভ করতে
+            JSON.stringify() ব্যবহার করুন।
+          </li>
+          <li>
+            <b>Security:</b> সেনসিটিভ ডাটা (Password/Token) এখানে রাখা উচিত নয়
+            কারণ এটি XSS অ্যাটাক এর মাধ্যমে চুরি হতে পারে।
+          </li>
+          <li><b>Persistence:</b> ব্রাউজার বন্ধ করলেও ডাটা ডিলিট হয় না।</li>
+        </ul>
+      </div>
+    </div>
+
+    <script>
+      const display = document.getElementById("display");
+
+      /**
+       * ১. localStorage.setItem(key, value):
+       * ব্রাউজারের স্টোরেজে ডাটা সেভ করার জন্য এটি ব্যবহৃত হয়।
+       * এটি দুটি প্যারামিটার নেয়: 'key' (নাম) এবং 'value' (মান)।
+       */
+      function saveData() {
+        localStorage.setItem("username", "Harsh");
+        localStorage.setItem("theme", "dark");
+        display.innerText = "Data Saved: username=Harsh, theme=dark"; // Output: Data Saved
+      }
+
+      /**
+       * ২. localStorage.getItem(key):
+       * স্টোরেজ থেকে নির্দিষ্ট 'key' এর মান পড়ার জন্য এটি ব্যবহৃত হয়।
+       * যদি key খুঁজে না পায় তবে এটি 'null' রিটার্ন করে।
+       */
+      function readData() {
+        const name = localStorage.getItem("username");
+        display.innerText = "Retrieved Name: " + name; // Output: Harsh (or null)
+        console.log(name); // Output: "Harsh"
+      }
+
+      /**
+       * ৩. Updating Data:
+       * LocalStorage এ আলাদা কোনো update মেথড নেই।
+       * একই key ব্যবহার করে নতুন value সেট করলে আগের value টি ওভাররাইট হয়ে যায়।
+       */
+      function updateData() {
+        localStorage.setItem("username", "Harsh Vardhan");
+        display.innerText = "Updated Name: " + localStorage.getItem("username"); // Output: Harsh Vardhan
+      }
+
+      /**
+       * ৪. localStorage.removeItem(key):
+       * স্টোরেজ থেকে নির্দিষ্ট কোনো একটি আইটেম ডিলিট করার জন্য এটি ব্যবহৃত হয়।
+       */
+      function removeSpecific() {
+        localStorage.removeItem("theme");
+        display.innerText = "Item 'theme' removed."; // Output: Item removed
+      }
+
+      /**
+       * ৫. localStorage.key(index):
+       * ইনডেক্স নাম্বার দিয়ে key এর নাম জানার জন্য এটি ব্যবহৃত হয়।
+       * এটি লুপ চালানোর সময় খুব কাজে লাগে।
+       */
+      function showKey() {
+        const firstKey = localStorage.key(0);
+        display.innerText = "Key at index 0: " + firstKey; // Output: username (or others)
+      }
+
+      /**
+       * ৬. localStorage.length:
+       * স্টোরেজে মোট কয়টি ডাটা আইটেম আছে তা জানার জন্য এই প্রপার্টি ব্যবহার করা হয়।
+       */
+      function showLength() {
+        const total = localStorage.length;
+        display.innerText = "Total items in Storage: " + total; // Output: e.g. 1 or 2
+      }
+
+      /**
+       * ৭. localStorage.clear():
+       * স্টোরেজের সমস্ত ডাটা একবারে মুছে ফেলার জন্য এটি ব্যবহৃত হয়।
+       */
+      function clearAll() {
+        localStorage.clear();
+        display.innerText = "All LocalStorage data cleared!"; // Output: Storage empty
+      }
+
+      /* 
+       =========================================================================
+       অতিরিক্ত তথ্য (Additional Knowledge):
+       =========================================================================
+       
+       ১. JSON Storage (Object/Array):
+       সরাসরি Object সেভ করলে তা "[object Object]" হিসেবে সেভ হয় যা ভুল।
+       সঠিক নিয়ম:
+       - সেভ করার সময়: localStorage.setItem("user", JSON.stringify(obj));
+       - পড়ার সময়: JSON.parse(localStorage.getItem("user"));
+
+       ২. Common Mistakes:
+       - Boolean বা Number সেভ করলেও তা String হিসেবে রিটার্ন আসে। (e.g. "26" instead of 26)
+       - প্রাইভেট উইন্ডো (Incognito) মোডে অনেক সময় LocalStorage কাজ করে না বা ব্রাউজার বন্ধ করলে মুছে যায়।
+
+       ৩. Difference (LocalStorage vs SessionStorage):
+       - LocalStorage: ব্রাউজার বা ট্যাব বন্ধ করলেও ডাটা থেকে যায়।
+       - SessionStorage: ট্যাব বন্ধ করলে ডাটা ডিলিট হয়ে যায়।
+
+       ৪. Dos & Don'ts:
+       - Do: ইউজার প্রেফারেন্স (Dark mode), শপিং কার্ট ডাটা সাময়িকভাবে রাখতে পারেন।
+       - Don't: ক্রেডিট কার্ড ইনফো বা পাসওয়ার্ড কখনোই রাখবেন না।
+       =========================================================================
+      */
+    </script>
+  </body>
+</html>
