@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SessionStorage API</title>
+  </head>
+  <body>
+    <div
+      id="app"
+      style="
+        font-family: sans-serif;
+        padding: 20px;
+        line-height: 1.6;
+        max-width: 800px;
+        margin: auto;
+        background: #f4f4f9;
+        border-radius: 10px;
+      "
+    >
+      <h1 style="color: #333; border-bottom: 2px solid #333">
+        SessionStorage API Study Note
+      </h1>
+
+      <div
+        style="
+          background: #fff;
+          padding: 15px;
+          margin-bottom: 10px;
+          border-left: 5px solid #2196f3;
+        "
+      >
+        <strong>Output Console:</strong>
+        <div id="display" style="color: #d32f2f; font-weight: bold"></div>
+      </div>
+
+      <div style="display: flex; gap: 10px; flex-wrap: wrap">
+        <button onclick="saveData()" style="padding: 10px; cursor: pointer">
+          1. Save Data (setItem)
+        </button>
+        <button onclick="readData()" style="padding: 10px; cursor: pointer">
+          2. Read Data (getItem)
+        </button>
+        <button onclick="updateData()" style="padding: 10px; cursor: pointer">
+          3. Update Data
+        </button>
+        <button
+          onclick="removeSpecific()"
+          style="padding: 10px; cursor: pointer"
+        >
+          4. Remove Item (removeItem)
+        </button>
+        <button onclick="showKey()" style="padding: 10px; cursor: pointer">
+          5. Get Key by Index (key)
+        </button>
+        <button onclick="showLength()" style="padding: 10px; cursor: pointer">
+          6. Total Items (length)
+        </button>
+        <button
+          onclick="clearAll()"
+          style="
+            padding: 10px;
+            background: #ff5252;
+            color: white;
+            border: none;
+            cursor: pointer;
+          "
+        >
+          7. Clear All (clear)
+        </button>
+      </div>
+
+      <div
+        style="
+          margin-top: 20px;
+          background: #e3f2fd;
+          padding: 15px;
+          border-radius: 5px;
+        "
+      >
+        <h3>Best Practices & Notes:</h3>
+        <div id="notes-container">
+          <ul>
+            <li>
+              <b>Persistence:</b> ট্যাব বা উইন্ডো বন্ধ করলে ডাটা ডিলিট হয়ে যায়।
+            </li>
+            <li>
+              <b>Scope:</b> এটি শুধুমাত্র নির্দিষ্ট ট্যাবের জন্য সীমাবদ্ধ।
+            </li>
+            <li><b>Storage Limit:</b> সাধারণত ৫ এমবি পর্যন্ত।</li>
+            <li><b>Data Type:</b> শুধুমাত্র String সাপোর্ট করে।</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      /* 
+         প্রয়োজনীয় এলিমেন্ট সিলেক্ট করা হচ্ছে যাতে আউটপুট দেখানো যায়।
+      */
+      const display = document.getElementById("display");
+
+      /**
+       * ১. sessionStorage.setItem(key, value):
+       * সেশন স্টোরেজে ডাটা সেভ করার জন্য এটি ব্যবহৃত হয়।
+       * এটি শুধুমাত্র বর্তমান ট্যাব খোলা থাকা পর্যন্ত ডাটা সংরক্ষণ করে।
+       */
+      function saveData() {
+        /* 
+           setItem মেথড দুটি স্ট্রিং প্যারামিটার নেয়। 
+           এখানে 'sessionUser' কী (key) এবং 'Anik' ভ্যালু (value) হিসেবে সেভ হচ্ছে।
+        */
+        sessionStorage.setItem("sessionUser", "Anik");
+        sessionStorage.setItem("sessionStatus", "Active");
+        display.innerText =
+          "Data Saved: sessionUser=Anik, sessionStatus=Active"; // Output: Data Saved: sessionUser=Anik...
+      }
+
+      /**
+       * ২. sessionStorage.getItem(key):
+       * স্টোরেজ থেকে নির্দিষ্ট 'key' এর মান পড়ার জন্য এটি ব্যবহৃত হয়।
+       */
+      function readData() {
+        /* 
+           getItem মেথড ব্যবহার করে 'sessionUser' কী-এর মান আনা হচ্ছে।
+           যদি ডাটা না থাকে তবে এটি null রিটার্ন করবে।
+        */
+        const user = sessionStorage.getItem("sessionUser");
+        display.innerText = "Retrieved Session User: " + user; // Output: Retrieved Session User: Anik
+      }
+
+      /**
+       * ৩. Updating Data:
+       * SessionStorage এ আলাদা কোনো update মেথড নেই।
+       * একই key তে নতুন value দিলে তা আগেরটিকে রিপ্লেস করে।
+       */
+      function updateData() {
+        /* 
+           আগের 'Anik' নাম পরিবর্তন করে 'Anik Ahmed' করা হচ্ছে।
+        */
+        sessionStorage.setItem("sessionUser", "Anik Ahmed");
+        display.innerText =
+          "Updated Session User: " + sessionStorage.getItem("sessionUser"); // Output: Updated Session User: Anik Ahmed
+      }
+
+      /**
+       * ৪. sessionStorage.removeItem(key):
+       * স্টোরেজ থেকে নির্দিষ্ট কোনো একটি আইটেম ডিলিট করার জন্য এটি ব্যবহৃত হয়।
+       */
+      function removeSpecific() {
+        /* 
+           'sessionStatus' কী-টি স্টোরেজ থেকে মুছে ফেলা হচ্ছে।
+        */
+        sessionStorage.removeItem("sessionStatus");
+        display.innerText = "Item 'sessionStatus' removed from session."; // Output: Item 'sessionStatus' removed...
+      }
+
+      /**
+       * ৫. sessionStorage.key(index):
+       * ইনডেক্স নাম্বার দিয়ে key এর নাম জানার জন্য এটি ব্যবহৃত হয়।
+       */
+      function showKey() {
+        /* 
+           ০ নম্বর ইনডেক্সে থাকা কী-এর নাম খুঁজে বের করা হচ্ছে।
+        */
+        const firstKey = sessionStorage.key(0);
+        display.innerText = "Key at index 0: " + (firstKey || "No keys found"); // Output: Key at index 0: sessionUser
+      }
+
+      /**
+       * ৬. sessionStorage.length:
+       * স্টোরেজে মোট কয়টি ডাটা আইটেম আছে তা জানার জন্য এই প্রপার্টি ব্যবহার করা হয়।
+       */
+      function showLength() {
+        /* 
+           length প্রপার্টি বর্তমান সেশনে থাকা মোট আইটেম সংখ্যা দেয়।
+        */
+        const total = sessionStorage.length;
+        display.innerText = "Total items in SessionStorage: " + total; // Output: Total items in SessionStorage: 1
+      }
+
+      /**
+       * ৭. sessionStorage.clear():
+       * স্টোরেজের সমস্ত ডাটা একবারে মুছে ফেলার জন্য এটি ব্যবহৃত হয়।
+       */
+      function clearAll() {
+        /* 
+           clear() মেথড কল করলে ওই ট্যাবের সব সেশন ডাটা ডিলিট হয়ে যাবে।
+        */
+        sessionStorage.clear();
+        display.innerText = "All SessionStorage data cleared!"; // Output: All SessionStorage data cleared!
+      }
+
+      /* 
+       =========================================================================
+       অতিরিক্ত তথ্য ও বেস্ট প্র্যাকটিস (Additional Knowledge & Best Practices):
+       =========================================================================
+       
+       ১. SessionStorage vs LocalStorage:
+       - SessionStorage: ট্যাব বন্ধ করলে ডাটা মুছে যায়। একই সাইট অন্য ট্যাবে খুললে এই ডাটা পাওয়া যাবে না।
+       - LocalStorage: ব্রাউজার বন্ধ করলেও ডাটা থেকে যায়। সব ট্যাবে ডাটা শেয়ার হয়।
+
+       ২. Object/Array সংরক্ষণ:
+       - সরাসরি অবজেক্ট সেভ করলে "[object Object]" দেখাবে।
+       - নিয়ম: JSON.stringify(obj) দিয়ে সেভ করতে হবে এবং JSON.parse() দিয়ে রিড করতে হবে।
+
+       ৩. Common Mistakes:
+       - ডাটা টাইপ ভুল করা: সব ডাটা স্ট্রিং হিসেবে সেভ হয়। সংখ্যা (Number) সেভ করলেও তা স্ট্রিং হিসেবে ফিরে আসে।
+       - সেনসিটিভ ডাটা: পাসওয়ার্ড বা ক্রেডিট কার্ড ইনফো কখনোই এখানে রাখা যাবে না (XSS রিস্ক)।
+
+       ৪. Dos & Don'ts:
+       - Do: এক পেজ থেকে অন্য পেজে ফর্ম ডাটা পাস করতে বা ওয়ান-টাইম লগইন সেশন রাখতে ব্যবহার করুন।
+       - Don't: পার্মানেন্ট সেটিংস (যেমন: Dark Mode preference) এখানে রাখবেন না, কারণ ট্যাব বন্ধ করলেই তা হারিয়ে যাবে।
+
+       ৫. JSON Storage (Object/Array):
+       সরাসরি Object সেভ করলে তা "[object Object]" হিসেবে সেভ হয়।
+       সঠিক নিয়ম:
+       - সেভ: sessionStorage.setItem("user", JSON.stringify(obj));
+       - রিড: JSON.parse(sessionStorage.getItem("user"));
+
+       ৬. Storage Event:
+       LocalStorage-এর মতো SessionStorage-এ ডাটা চেঞ্জ হলে অন্য ট্যাবে ইভেন্ট ফায়ার হয় না, কারণ এটি ট্যাব-স্পেসিফিক।
+      */
+    </script>
+  </body>
+</html>
