@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Demonstration of Inline validation</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        font-family: "Artifakt Element";
+        font-weight: 600;
+        margin: 0;
+        padding: 0;
+      }
+      html,
+      body {
+        height: 100%;
+        width: 100%;
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: #222;
+      }
+      input,
+      select,
+      textarea {
+        width: 25rem;
+        height: auto;
+        padding: 0.5rem;
+        margin-bottom: 2rem;
+      }
+      form {
+        display: flex;
+        flex-direction: column;
+      }
+      #btn {
+        background: #1ce9b5;
+        border-radius: 0.25rem;
+        border: 0;
+        color: #1e1b18;
+        cursor: pointer;
+        font-weight: 700;
+        padding: 0.5rem 1.5rem;
+        transition: all 0.3s ease-in-out;
+      }
+      #btn:hover {
+        background: #139b79;
+      }
+      small {
+        color: crimson;
+        margin-top: -1.5rem;
+        margin-bottom: 1rem;
+      }
+      .card {
+        border: 2px solid #555;
+        border-radius: 0.5rem;
+        padding: 1.5rem;
+        max-width: 22rem;
+        color: azure;
+      }
+      .profile {
+        width: 2.5rem;
+        height: 2.5rem;
+        overflow: hidden;
+        border-radius: 50%;
+        margin-bottom: 0.5rem;
+      }
+      .profile img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .card p {
+        font-size: 0.75rem;
+        margin-top: 0.5rem;
+      }
+      .card-list {
+        width: 100%;
+        padding: 1rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(22rem, 1fr));
+        gap: 2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="main">
+      <form>
+        <input
+          required
+          minlength="3"
+          maxlength="10"
+          type="text"
+          name="name"
+          id="name"
+          placeholder="Enter Name"
+        />
+        <small id="name-error" hidden
+          >Name must be at least 3 characters long</small
+        >
+        <input type="email" name="email" id="email" placeholder="Enter Email" />
+        <small id="email-error" hidden
+          >Please enter a valid email address</small
+        >
+        <input
+          pattern="[a-z]{3-8}"
+          required
+          type="password"
+          name="password"
+          id="password"
+          placeholder="Enter Password"
+        />
+        <small id="password-error" hidden
+          >Password must be at least 8 characters</small
+        >
+        <select name="gender" id="gender">
+          <option selected disabled>Choose Your Gender</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="others">Others</option>
+        </select>
+        <small id="gender-error" hidden>Please select your gender</small>
+        <textarea
+          name="bio"
+          id="bio"
+          placeholder="Tell us about you"
+        ></textarea>
+        <small id="bio-error" hidden>Bio cannot be empty</small>
+        <input type="submit" id="btn" value="Submit" />
+      </form>
+      <div class="card-list"></div>
+    </div>
+    <script>
+      /* 
+         ১. এলিমেন্ট সিলেকশন (Element Selection):
+         DOM থেকে ফর্ম, ইনপুট ফিল্ড এবং এরর মেসেজ দেখানোর জন্য <small> ট্যাগগুলোকে ভেরিয়েবলে রাখা হচ্ছে।
+         এটি কোডকে ক্লিন রাখে এবং বারবার DOM কুয়েরি করা থেকে বাঁচায়।
+      */
+      let form = document.querySelector("form"); // মূল ফর্ম এলিমেন্ট
+
+      let input_name = document.querySelector("#name"); // নাম ইনপুট
+      let input_email = document.querySelector("#email"); // ইমেইল ইনপুট
+      let input_password = document.querySelector("#password"); // পাসওয়ার্ড ইনপুট
+      let input_gender = document.querySelector("#gender"); // জেন্ডার সিলেক্ট বক্স
+      let input_bio = document.querySelector("#bio"); // বায়ো টেক্সট এরিয়া
+
+      let name_error = document.querySelector("#name-error"); // নামের এরর মেসেজ
+      let email_error = document.querySelector("#email-error"); // ইমেইলের এরর মেসেজ
+      let password_error = document.querySelector("#password-error"); // পাসওয়ার্ডের এরর মেসেজ
+      let gender_error = document.querySelector("#gender-error"); // জেন্ডারের এরর মেসেজ
+      let bio_error = document.querySelector("#bio-error"); // বায়োর এরর মেসেজ
+
+      let cardList = document.querySelector(".card-list"); // যেখানে কার্ডগুলো ডিসপ্লে হবে
+
+      /* 
+         ২. 'submit' ইভেন্ট লিসেনার:
+         ফর্মে সাবমিট বাটনে ক্লিক করলে বা এন্টার চাপলে এই ফাংশনটি কাজ করবে।
+      */
+      form.addEventListener("submit", (e) => {
+        /* 
+           ৩. preventDefault():
+           ব্রাউজারের ডিফল্ট স্বভাব হলো সাবমিট হলে পেজ রিফ্রেশ করা। 
+           এটি বন্ধ করা হয়েছে যাতে আমরা জাভাস্ক্রিপ্ট দিয়ে ডাটা প্রসেস করতে পারি।
+        */
+        e.preventDefault(); // Output: পেজ রিফ্রেশ হওয়া বন্ধ হবে
+
+        /* 
+           ৪. ভ্যালু রিডিং (Reading Values):
+           সিলেক্ট বক্স থেকে বর্তমানে সিলেক্ট করা জেন্ডারের ভ্যালু নেওয়া হচ্ছে।
+        */
+        let gender = input_gender.selectedOptions[0].value; // Output: "male", "female" ইত্যাদি
+
+        /* ৫. ডাইনামিক কার্ড তৈরি (DOM Manipulation): */
+        let card = document.createElement("div"); // নতুন ডিভ তৈরি
+        card.classList.add("card"); // CSS ক্লাস যোগ করা হলো
+
+        let profile = document.createElement("div"); // প্রোফাইল পিকচারের কন্টেইনার
+        profile.classList.add("profile");
+
+        let img = document.createElement("img"); // ইমেজ ট্যাগ তৈরি
+
+        /* 
+           ৬. API কল (Fetch API):
+           সিলেক্ট করা জেন্ডারের ওপর ভিত্তি করে র‍্যান্ডম প্রোফাইল পিকচার আনা হচ্ছে।
+        */
+        fetch(`https://randomuser.me/api/?gender=${gender}&inc=picture`)
+          .then((response) => response.json()) // রেসপন্সকে JSON এ রূপান্তর
+          .then((result) => {
+            img.setAttribute("src", result.results[0].picture.large); // Output: ইমেজের সোর্স সেট হবে
+          })
+          .catch((error) => console.error(error)); // এরর হ্যান্ডলিং
+
+        let h3 = document.createElement("h3");
+        h3.textContent = input_name.value; // Output: ইনপুট থেকে নাম সেট হবে
+
+        let h5 = document.createElement("h5");
+        h5.textContent = input_email.value; // Output: ইমেইল সেট হবে
+
+        let p = document.createElement("p");
+        p.textContent = input_bio.value; // Output: বায়ো টেক্সট সেট হবে
+
+        /* 
+           ৭. অ্যাপেন্ডিং (Appending):
+           তৈরি করা এলিমেন্টগুলোকে ক্রমানুসারে সাজানো হচ্ছে।
+        */
+        profile.appendChild(img);
+
+        card.appendChild(profile);
+        card.appendChild(h3);
+        card.appendChild(h5);
+        card.appendChild(p);
+
+        cardList.appendChild(card); // Output: স্ক্রিনে নতুন কার্ড যুক্ত হবে
+
+        /* 
+           ৮. রেগুলার এক্সপ্রেশন (Regex) দিয়ে ইমেইল ভ্যালিডেশন:
+           এটি একটি স্ট্যান্ডার্ড প্যাটার্ন যা চেক করে ইমেইল ফরম্যাট ঠিক আছে কি না।
+        */
+        const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+        console.log(emailRegex.test("a@a.com")); // Output: true (কনসোলে দেখাবে)
+      });
+
+      /* 
+         ---------------------------------------------------------
+         Study Notes & Best Practices (Inline Validation):
+         ---------------------------------------------------------
+         
+         ১. ইনলাইন ভ্যালিডেশন কী?
+            - ইউজার যখন টাইপ করে বা ফর্ম সাবমিট করার চেষ্টা করে, তখনই রিয়েল-টাইমে ভুল ধরিয়ে দেওয়াকে ইনলাইন ভ্যালিডেশন বলে।
+
+         ২. HTML5 Validation Attributes:
+            - required: ফিল্ডটি অবশ্যই পূরণ করতে হবে।
+            - minlength/maxlength: ক্যারেক্টার লিমিট সেট করা।
+            - pattern: Regex ব্যবহার করে নির্দিষ্ট ফরম্যাট (যেমন পাসওয়ার্ড পলিসি) সেট করা।
+
+         ৩. Common Mistakes (সাধারণ ভুল):
+            - শুধু HTML অ্যাট্রিবিউটের ওপর নির্ভর করা। মনে রাখতে হবে ইউজার 'Inspect Element' দিয়ে এগুলো মুছে দিতে পারে, তাই জাভাস্ক্রিপ্ট ভ্যালিডেশন জরুরি।
+            - এরর মেসেজগুলো (small tags) শুরুতে 'hidden' না রাখা।
+
+         ৪. Best Practices (সেরা নিয়ম):
+            - 'input' ইভেন্ট ব্যবহার করে ইউজার টাইপ করার সময় সাথে সাথে এরর মেসেজ হাইড বা শো করা (UX এর জন্য ভালো)।
+            - ইমেইল ভ্যালিডেশনের জন্য সবসময় Regex ব্যবহার করা।
+            - সাবমিট হওয়ার পর input.value = "" করে ফর্ম রিসেট করা।
+
+         ৫. Thumb-up Rules:
+            - পাসওয়ার্ড ফিল্ডে সবসময় 'type="password"' ব্যবহার করুন যাতে কেউ দেখে না ফেলে।
+            - এরর মেসেজগুলো লাল রঙে (crimson/red) দেখানো একটি স্ট্যান্ডার্ড প্র্যাকটিস।
+
+         ৬. Expected Output Flow:
+            - ইউজার নাম, ইমেইল, পাসওয়ার্ড এবং বায়ো লিখবে।
+            - সাবমিট বাটনে ক্লিক করলে API থেকে ছবি আসবে।
+            - নিচে একটি সুন্দর প্রোফাইল কার্ড তৈরি হবে যেখানে ইউজারের সব তথ্য থাকবে।
+      */
+    </script>
+  </body>
+</html>
